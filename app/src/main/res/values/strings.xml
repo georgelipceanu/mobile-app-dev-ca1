@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ca1</string>
+    <string name="button_addCloudJob">Add Cloud Job</string>
 </resources>
