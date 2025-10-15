@@ -1,14 +1,15 @@
-package com.example.ca1
+package com.example.ca1.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ca1.databinding.ActivityCloudjobBinding
+import com.example.ca1.models.CloudJobModel
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
-import timber.log.Timber.i
 
 class CloudJobActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCloudjobBinding
+    var cloudJob = CloudJobModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,12 +17,12 @@ class CloudJobActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Timber.plant(Timber.DebugTree())
-        i("CloudJob Activity started..")
+        Timber.i("CloudJob Activity started..")
 
         binding.btnAdd.setOnClickListener() {
-            val cloudjobTitle = binding.cloudjobTitle.text.toString()
-            if (cloudjobTitle.isNotEmpty()) {
-                i("add Button Pressed: $cloudjobTitle")
+            cloudJob.title = binding.cloudjobTitle.text.toString()
+            if (cloudJob.title.isNotEmpty()) {
+                Timber.i("add Button Pressed: $cloudJob.title")
             }
             else {
                 Snackbar
