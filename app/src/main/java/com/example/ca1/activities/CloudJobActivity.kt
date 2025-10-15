@@ -22,6 +22,7 @@ class CloudJobActivity : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
+            cloudJob.description = binding.description.text.toString()
             if (cloudJob.title.isNotEmpty()) {
                 cloudJobs.add(cloudJob.copy())
                 i("add Button Pressed: $cloudJob.title")
