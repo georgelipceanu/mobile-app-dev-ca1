@@ -6,10 +6,11 @@ import com.example.ca1.databinding.ActivityCloudjobBinding
 import com.example.ca1.models.CloudJobModel
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
-
+import timber.log.Timber.i
 class CloudJobActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCloudjobBinding
     var cloudJob = CloudJobModel()
+    val cloudJobs = ArrayList<CloudJobModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,12 +18,15 @@ class CloudJobActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Timber.plant(Timber.DebugTree())
-        Timber.i("CloudJob Activity started..")
+        i("CloudJob Activity started..")
 
         binding.btnAdd.setOnClickListener() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
             if (cloudJob.title.isNotEmpty()) {
-                Timber.i("add Button Pressed: $cloudJob.title")
+                cloudJobs.add(cloudJob.copy())
+                i("add Button Pressed: $cloudJob.title")
+                for (i in cloudJobs.indices)
+                    { i("Placemark[$i]:${this.cloudJobs[i]}") }
             }
             else {
                 Snackbar
