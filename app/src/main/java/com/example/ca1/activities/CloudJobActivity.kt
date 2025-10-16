@@ -1,40 +1,56 @@
 package com.example.ca1.activities
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.example.ca1.R
 import com.example.ca1.databinding.ActivityCloudjobBinding
+import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import com.google.android.material.snackbar.Snackbar
-import timber.log.Timber
 import timber.log.Timber.i
 class CloudJobActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCloudjobBinding
     var cloudJob = CloudJobModel()
-    val cloudJobs = ArrayList<CloudJobModel>()
+    lateinit var app : MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCloudjobBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Timber.plant(Timber.DebugTree())
-        i("CloudJob Activity started..")
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
 
+        app = application as MainApp
         binding.btnAdd.setOnClickListener() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
             cloudJob.description = binding.description.text.toString()
             if (cloudJob.title.isNotEmpty()) {
-                cloudJobs.add(cloudJob.copy())
+                app.cloudJobs.add(cloudJob.copy())
                 i("add Button Pressed: $cloudJob.title")
-                for (i in cloudJobs.indices)
-                    { i("Placemark[$i]:${this.cloudJobs[i]}") }
+                for (i in app.cloudJobs.indices) i("Placemark[$i]:${this.app.cloudJobs[i]}")
+                setResult(RESULT_OK)
+                finish()
             }
             else {
-                Snackbar
-                    .make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
-                    .show()
+                Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG).show()
+            }
+
+        }
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.cloud_job_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_cancel -> {
+                finish()
             }
         }
-        setContentView(binding.root)
+        return super.onOptionsItemSelected(item)
     }
 }
