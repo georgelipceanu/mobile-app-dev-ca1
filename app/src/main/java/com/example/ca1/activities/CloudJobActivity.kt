@@ -24,13 +24,12 @@ class CloudJobActivity : AppCompatActivity() {
             if (cloudJob.title.isNotEmpty()) {
                 app.cloudJobs.add(cloudJob.copy())
                 i("add Button Pressed: $cloudJob.title")
-                for (i in app.cloudJobs.indices)
-                { i("Placemark[$i]:${this.app.cloudJobs[i]}") }
+                for (i in app.cloudJobs.indices) i("Placemark[$i]:${this.app.cloudJobs[i]}")
+                setResult(RESULT_OK)
+                finish()
             }
             else {
-                Snackbar
-                    .make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
-                    .show()
+                Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG).show()
             }
         }
         setContentView(binding.root)

@@ -12,7 +12,5 @@ class MainApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         i("Cloud Jobs App started")
-        cloudJobs.add(CloudJobModel("One", "About one..."))
-        cloudJobs.add(CloudJobModel("Two", "About two..."))
     }
 }
