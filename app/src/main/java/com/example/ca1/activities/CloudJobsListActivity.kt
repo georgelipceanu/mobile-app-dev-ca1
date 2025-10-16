@@ -3,9 +3,11 @@ package com.example.ca1.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ca1.R
 import com.example.ca1.databinding.ActivityCloudJobsListBinding
 import com.example.ca1.databinding.CardCloudJobBinding
 import com.example.ca1.main.MainApp
@@ -19,6 +21,8 @@ class CloudJobsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCloudJobsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
 
         app = application as MainApp
 
@@ -26,9 +30,13 @@ class CloudJobsListActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = CloudJobAdapter(app.cloudJobs)
     }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 }
 
-class CloudJobAdapter constructor(private var cloudJobs: List<CloudJobModel>) :
+class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>) :
     RecyclerView.Adapter<CloudJobAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {

@@ -3,4 +3,5 @@
     <string name="button_addCloudJob">Add Cloud Job</string>
     <string name="hint_cloudjobTitle">Cloud Job Title</string>
     <string name="hint_cloudjobDescription">Description </string>
+    <string name="menu_addCloudJob">Add</string>
 </resources>
