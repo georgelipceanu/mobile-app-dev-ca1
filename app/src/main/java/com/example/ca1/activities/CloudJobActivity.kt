@@ -13,6 +13,7 @@ import timber.log.Timber.i
 class CloudJobActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCloudjobBinding
     var cloudJob = CloudJobModel()
+    var edit = false
     lateinit var app : MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,20 +25,29 @@ class CloudJobActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
+
+        if (intent.hasExtra("cloud_job_edit")) {
+            edit = true
+            cloudJob = intent.extras?.getParcelable("cloud_job_edit")!!
+            binding.cloudjobTitle.setText(cloudJob.title)
+            binding.description.setText(cloudJob.description)
+            binding.btnAdd.setText(R.string.save_cloud_job)
+        }
+
         binding.btnAdd.setOnClickListener() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
             cloudJob.description = binding.description.text.toString()
-            if (cloudJob.title.isNotEmpty()) {
-                app.cloudJobs.add(cloudJob.copy())
-                i("add Button Pressed: $cloudJob.title")
-                for (i in app.cloudJobs.indices) i("Placemark[$i]:${this.app.cloudJobs[i]}")
-                setResult(RESULT_OK)
-                finish()
+            if (cloudJob.title.isEmpty()) {
+                Snackbar.make(it,R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG).show()
+            } else {
+                if (edit) {
+                    app.cloudJobs.update(cloudJob.copy())
+                } else {
+                    app.cloudJobs.create(cloudJob.copy())
+                }
             }
-            else {
-                Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG).show()
-            }
-
+            setResult(RESULT_OK)
+            finish()
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

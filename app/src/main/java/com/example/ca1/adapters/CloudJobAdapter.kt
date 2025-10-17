@@ -6,7 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ca1.databinding.CardCloudJobBinding
 import com.example.ca1.models.CloudJobModel
 
-class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>) :
+interface CloudJobListener {
+    fun onCloudJobClick(cloudjob: CloudJobModel)
+}
+
+class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
+                       private val listener: CloudJobListener) :
     RecyclerView.Adapter<CloudJobAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -18,7 +23,7 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>) :
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val cloudJob = cloudJobs[holder.adapterPosition]
-        holder.bind(cloudJob)
+        holder.bind(cloudJob, listener)
     }
 
     override fun getItemCount(): Int = cloudJobs.size
@@ -26,9 +31,10 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>) :
     class MainHolder(private val binding: CardCloudJobBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(cloudJob: CloudJobModel) {
+        fun bind(cloudJob: CloudJobModel, listener: CloudJobListener) {
             binding.cloudjobTitle.text = cloudJob.title
             binding.description.text = cloudJob.description
+            binding.root.setOnClickListener { listener.onCloudJobClick(cloudJob) }
         }
     }
 }

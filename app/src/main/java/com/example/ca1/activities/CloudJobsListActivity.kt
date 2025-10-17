@@ -9,10 +9,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ca1.R
 import com.example.ca1.adapters.CloudJobAdapter
+import com.example.ca1.adapters.CloudJobListener
 import com.example.ca1.databinding.ActivityCloudJobsListBinding
 import com.example.ca1.main.MainApp
+import com.example.ca1.models.CloudJobModel
 
-class CloudJobsListActivity : AppCompatActivity() {
+class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityCloudJobsListBinding
 
@@ -27,7 +29,7 @@ class CloudJobsListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = CloudJobAdapter(app.cloudJobs)
+        binding.recyclerView.adapter = CloudJobAdapter(app.cloudJobs.findAll(), this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -50,7 +52,23 @@ class CloudJobsListActivity : AppCompatActivity() {
         ) {
             if (it.resultCode == RESULT_OK) {
                 (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.cloudJobs.size)
+                notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
+            }
+        }
+
+    override fun onCloudJobClick(cloudjob: CloudJobModel) {
+        val launcherIntent = Intent(this, CloudJobActivity::class.java)
+        launcherIntent.putExtra("cloud_job_edit", cloudjob)
+        getClickResult.launch(launcherIntent)
+    }
+
+    private val getClickResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == RESULT_OK) {
+                (binding.recyclerView.adapter)?.
+                notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
             }
         }
 }
