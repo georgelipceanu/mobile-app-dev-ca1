@@ -29,6 +29,7 @@ class CloudJobActivity : AppCompatActivity() {
             cloudJob = intent.extras?.getParcelable("cloud_job_edit")!!
             binding.cloudjobTitle.setText(cloudJob.title)
             binding.description.setText(cloudJob.description)
+            binding.btnAdd.setText(R.string.save_cloud_job)
         }
 
         binding.btnAdd.setOnClickListener() {
