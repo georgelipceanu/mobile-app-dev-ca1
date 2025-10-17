@@ -24,6 +24,13 @@ class CloudJobActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
+
+        if (intent.hasExtra("cloud_job_edit")) {
+            cloudJob = intent.extras?.getParcelable("cloud_job_edit")!!
+            binding.cloudjobTitle.setText(cloudJob.title)
+            binding.description.setText(cloudJob.description)
+        }
+
         binding.btnAdd.setOnClickListener() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
             cloudJob.description = binding.description.text.toString()

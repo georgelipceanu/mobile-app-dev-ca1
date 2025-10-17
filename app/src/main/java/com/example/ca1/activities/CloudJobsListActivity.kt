@@ -58,6 +58,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
 
     override fun onCloudJobClick(cloudjob: CloudJobModel) {
         val launcherIntent = Intent(this, CloudJobActivity::class.java)
+        launcherIntent.putExtra("cloud_job_edit", cloudjob)
         getClickResult.launch(launcherIntent)
     }
 
