@@ -40,7 +40,7 @@ class CloudJobActivity : AppCompatActivity() {
                 finish()
             }
             else {
-                Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(it,R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG).show()
             }
 
         }

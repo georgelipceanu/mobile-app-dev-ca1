@@ -5,4 +5,5 @@
     <string name="hint_cloudjobDescription">Description </string>
     <string name="menu_addCloudJob">Add</string>
     <string name="menu_cancelCloudJob">Cancel</string>
+    <string name="enter_cloud_job_title"> Please enter a Cloud Job Title </string>
 </resources>
