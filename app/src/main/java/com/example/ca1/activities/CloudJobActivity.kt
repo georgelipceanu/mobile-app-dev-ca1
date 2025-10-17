@@ -28,9 +28,7 @@ class CloudJobActivity : AppCompatActivity() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
             cloudJob.description = binding.description.text.toString()
             if (cloudJob.title.isNotEmpty()) {
-                app.cloudJobs.add(cloudJob.copy())
-                i("add Button Pressed: $cloudJob.title")
-                for (i in app.cloudJobs.indices) i("Placemark[$i]:${this.app.cloudJobs[i]}")
+                app.cloudJobs.create(cloudJob.copy())
                 setResult(RESULT_OK)
                 finish()
             }

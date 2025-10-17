@@ -27,7 +27,7 @@ class CloudJobsListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = CloudJobAdapter(app.cloudJobs)
+        binding.recyclerView.adapter = CloudJobAdapter(app.cloudJobs.findAll())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -50,7 +50,7 @@ class CloudJobsListActivity : AppCompatActivity() {
         ) {
             if (it.resultCode == RESULT_OK) {
                 (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.cloudJobs.size)
+                notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
             }
         }
 }
