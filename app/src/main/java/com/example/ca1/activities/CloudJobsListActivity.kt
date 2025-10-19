@@ -73,4 +73,11 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
                 (binding.recyclerView.adapter)?.notifyDataSetChanged()
             }
         }
+
+    override fun onCloudJobDeleteIconClick(cloudjob: CloudJobModel) {
+        app.cloudJobs.delete(cloudjob)
+        (binding.recyclerView.adapter)?.
+        notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
+        (binding.recyclerView.adapter)?.notifyDataSetChanged()
+    }
 }
