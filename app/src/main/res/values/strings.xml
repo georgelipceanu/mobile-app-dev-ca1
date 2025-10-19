@@ -7,4 +7,5 @@
     <string name="menu_cancelCloudJob">Cancel</string>
     <string name="enter_cloud_job_title"> Please enter a Cloud Job Title </string>
     <string name="save_cloud_job"> Save Cloud Job</string>
+    <string name="delete_cloudJob">Delete</string>
 </resources>
