@@ -30,6 +30,14 @@ class CloudJobMemStore : CloudJobStore {
         }
     }
 
+    override fun delete(cloudJob : CloudJobModel) {
+        var foundCloudJob: CloudJobModel? = cloudJobs.find { p -> p.id == cloudJob.id }
+        if (foundCloudJob != null) {
+            cloudJobs.remove(foundCloudJob)
+            logAll()
+        }
+    }
+
     fun logAll() {
         cloudJobs.forEach{ i("$it") }
     }

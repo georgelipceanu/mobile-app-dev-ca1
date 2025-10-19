@@ -52,11 +52,19 @@ class CloudJobActivity : AppCompatActivity() {
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.cloud_job_menu, menu)
+        menu.findItem(R.id.item_delete)?.isVisible = edit           // changes based on if it job is being edited or not (ref: https://stackoverflow.com/questions/47764335/android-menu-item-visibility-change-in-runtime)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.item_delete -> {
+                if (edit) {
+                    app.cloudJobs.delete(cloudJob)
+                    setResult(RESULT_OK)
+                    finish()
+                }
+            }
             R.id.item_cancel -> {
                 finish()
             }
