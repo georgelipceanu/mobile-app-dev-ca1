@@ -53,6 +53,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
             if (it.resultCode == RESULT_OK) {
                 (binding.recyclerView.adapter)?.
                 notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
+                (binding.recyclerView.adapter)?.notifyDataSetChanged()                // update in RecyclerView for deleted jobs (ref: https://suragch.medium.com/updating-data-in-an-android-recyclerview-842e56adbfd8)
             }
         }
 
@@ -69,6 +70,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
             if (it.resultCode == RESULT_OK) {
                 (binding.recyclerView.adapter)?.
                 notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
+                (binding.recyclerView.adapter)?.notifyDataSetChanged()
             }
         }
 }
