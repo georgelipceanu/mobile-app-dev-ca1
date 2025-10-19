@@ -4,5 +4,6 @@ interface CloudJobStore {
     fun findAll(): List<CloudJobModel>
     fun create(cloudJob: CloudJobModel)
 
-    fun update(placemark: CloudJobModel)
+    fun update(cloudJob: CloudJobModel)
+    fun delete(cloudJob: CloudJobModel)
 }

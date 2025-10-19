@@ -8,6 +8,7 @@ import com.example.ca1.models.CloudJobModel
 
 interface CloudJobListener {
     fun onCloudJobClick(cloudjob: CloudJobModel)
+    fun onCloudJobDeleteIconClick(cloudjob: CloudJobModel)
 }
 
 class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
@@ -35,6 +36,7 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
             binding.cloudjobTitle.text = cloudJob.title
             binding.description.text = cloudJob.description
             binding.root.setOnClickListener { listener.onCloudJobClick(cloudJob) }
+            binding.deleteButton.setOnClickListener { listener.onCloudJobDeleteIconClick(cloudJob) }
         }
     }
 }
