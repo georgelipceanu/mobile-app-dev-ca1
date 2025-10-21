@@ -1,5 +1,6 @@
 package com.example.ca1.activities
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,7 +10,7 @@ import com.example.ca1.databinding.ActivityCloudjobBinding
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import com.google.android.material.snackbar.Snackbar
-import timber.log.Timber.i
+import java.util.Calendar
 class CloudJobActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCloudjobBinding
     var cloudJob = CloudJobModel()
@@ -32,6 +33,30 @@ class CloudJobActivity : AppCompatActivity() {
             binding.cloudjobTitle.setText(cloudJob.title)
             binding.description.setText(cloudJob.description)
             binding.btnAdd.setText(R.string.save_cloud_job)
+            binding.deadlineField.setText(cloudJob.deadline)
+        }
+
+        binding.deadlineField.setOnClickListener {
+            val cal = Calendar.getInstance() // format "yyyy-MM-dd"
+            val deadline = cloudJob.deadline
+            if (!deadline.isNullOrBlank()) {
+                val y = deadline.substring(0, 4).toInt()
+                val m = deadline.substring(5, 7).toInt() - 1 // months follow 0-11 for DatePicker
+                val d = deadline.substring(8, 10).toInt()
+                cal.set(y, m, d)
+            }
+
+            val y = cal.get(Calendar.YEAR)
+            val m = cal.get(Calendar.MONTH)
+            val d = cal.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(this,
+                { _, year, month, dayOfMonth ->
+                    val date = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                    binding.deadlineField.setText(date)
+                    cloudJob.deadline = date
+                },
+                y, m, d).show()
         }
 
         binding.btnAdd.setOnClickListener() {

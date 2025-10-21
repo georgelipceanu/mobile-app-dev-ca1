@@ -9,4 +9,5 @@
     <string name="enter_cloud_job_title"> Please enter a Cloud Job Title </string>
     <string name="save_cloud_job"> Save Cloud Job</string>
     <string name="delete_cloudJob">Delete Cloud Job (Icon)</string>
+    <string name="calendar_picker">Choose Deadline</string>
 </resources>
