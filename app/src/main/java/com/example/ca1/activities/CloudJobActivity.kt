@@ -52,7 +52,7 @@ class CloudJobActivity : AppCompatActivity() {
 
             DatePickerDialog(this,
                 { _, year, month, dayOfMonth ->
-                    val date = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                    val date = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth) // format "yyyy-MM-dd", ref: https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.text/format.html
                     binding.deadlineField.setText(date)
                     cloudJob.deadline = date
                 },
