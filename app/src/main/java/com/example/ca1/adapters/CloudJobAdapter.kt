@@ -37,6 +37,7 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
             binding.description.text = cloudJob.description
             binding.deadline.text = if (!cloudJob.deadline.isNullOrBlank()) "Deadline: ${cloudJob.deadline}" else "No Deadline"
             binding.cpu.text = "CPU: ${cloudJob.CPUType}"
+            binding.replicaCount.text = "Replica Count: ${cloudJob.replicas}"
 
             binding.root.setOnClickListener { listener.onCloudJobClick(cloudJob) }
             binding.deleteButton.setOnClickListener { listener.onCloudJobDeleteIconClick(cloudJob) }

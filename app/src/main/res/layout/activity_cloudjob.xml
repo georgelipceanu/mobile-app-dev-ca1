@@ -96,9 +96,17 @@
                     android:layout_weight="1"
                     android:inputType="none"
                     android:textSize="13sp"
-                    android:text="Choose CPU"
-                    />
+                    android:text="Choose CPU" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <NumberPicker
+                    android:id="@+id/replicaPicker"
+                    android:layout_width="113dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:hint="@string/hint_replica"
+                    android:solidColor="#D5D5D5" />
 
                 <Button
                     android:id="@+id/btnAdd"
