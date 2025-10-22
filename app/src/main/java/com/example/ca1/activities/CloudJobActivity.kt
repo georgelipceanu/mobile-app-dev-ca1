@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ca1.R
 import com.example.ca1.databinding.ActivityCloudjobBinding
@@ -22,7 +24,7 @@ class CloudJobActivity : AppCompatActivity() {
         binding = ActivityCloudjobBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.toolbarAdd.title = title
+        binding.toolbarAdd.title = "Cloud Job Config"
         setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
@@ -32,8 +34,9 @@ class CloudJobActivity : AppCompatActivity() {
             cloudJob = intent.extras?.getParcelable("cloud_job_edit")!!
             binding.cloudjobTitle.setText(cloudJob.title)
             binding.description.setText(cloudJob.description)
-            binding.btnAdd.setText(R.string.save_cloud_job)
             binding.deadlineField.setText(cloudJob.deadline)
+            binding.CPUAutoComplete.setText(cloudJob.CPUType)
+            binding.btnAdd.setText(R.string.save_cloud_job)
         }
 
         binding.deadlineField.setOnClickListener {
@@ -59,9 +62,16 @@ class CloudJobActivity : AppCompatActivity() {
                 y, m, d).show()
         }
 
+        val cpus = resources.getStringArray(R.array.cpu_types)      // ref for dropdowns: https://www.geeksforgeeks.org/kotlin/exposed-drop-down-menu-in-android/
+        val cpuArrayAdapter = ArrayAdapter(this, R.layout.cpu_dropdown, cpus)
+        val cpuAC = findViewById<AutoCompleteTextView>(R.id.CPUAutoComplete)
+        cpuAC.setAdapter(cpuArrayAdapter)
+
         binding.btnAdd.setOnClickListener() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
             cloudJob.description = binding.description.text.toString()
+            cloudJob.deadline = binding.deadlineField.text.toString()
+            cloudJob.CPUType = binding.CPUAutoComplete.text.toString()
             if (cloudJob.title.isEmpty()) {
                 Snackbar.make(it,R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG).show()
             } else {

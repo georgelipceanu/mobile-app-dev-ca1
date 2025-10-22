@@ -35,7 +35,8 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
         fun bind(cloudJob: CloudJobModel, listener: CloudJobListener) {
             binding.cloudjobTitle.text = cloudJob.title
             binding.description.text = cloudJob.description
-            binding.deadline.text = if (!cloudJob.deadline.isNullOrBlank()) "Deadline: ${cloudJob.deadline}" else "No deadline set"
+            binding.deadline.text = if (!cloudJob.deadline.isNullOrBlank()) "Deadline: ${cloudJob.deadline}" else "No Deadline"
+            binding.cpu.text = "CPU: ${cloudJob.CPUType}"
 
             binding.root.setOnClickListener { listener.onCloudJobClick(cloudJob) }
             binding.deleteButton.setOnClickListener { listener.onCloudJobDeleteIconClick(cloudJob) }

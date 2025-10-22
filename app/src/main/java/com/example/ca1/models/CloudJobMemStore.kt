@@ -33,6 +33,7 @@ class CloudJobMemStore(context: Context) : CloudJobStore { // context needed for
             foundCloudJob.title = cloudJob.title
             foundCloudJob.description = cloudJob.description
             foundCloudJob.deadline = cloudJob.deadline
+            foundCloudJob.CPUType = cloudJob.CPUType
             logAll()
             save()
         }
