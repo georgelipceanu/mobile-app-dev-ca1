@@ -2,6 +2,7 @@ package com.example.ca1.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ca1.databinding.CardCloudJobBinding
 import com.example.ca1.models.CloudJobModel
@@ -35,6 +36,15 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
         fun bind(cloudJob: CloudJobModel, listener: CloudJobListener) {
             binding.cloudjobTitle.text = cloudJob.title
             binding.description.text = cloudJob.description
+            binding.deadline.text = if (!cloudJob.deadline.isNullOrBlank()) "Deadline: ${cloudJob.deadline}" else "No Deadline"
+            binding.cpu.text = "CPU: ${cloudJob.CPUType}"
+            binding.replicaCount.text = "Replica Count: ${cloudJob.replicas}"
+            binding.duration.isVisible = false
+            if (cloudJob.duration > -1) {
+                binding.duration.isVisible = true
+                binding.duration.text = "${cloudJob.duration} mins"
+            }
+
             binding.root.setOnClickListener { listener.onCloudJobClick(cloudJob) }
             binding.deleteButton.setOnClickListener { listener.onCloudJobDeleteIconClick(cloudJob) }
         }

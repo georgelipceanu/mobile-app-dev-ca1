@@ -28,6 +28,46 @@
             android:layout_below="@id/cloudjobTitle"
             tools:text="A Description" />
 
+        <TextView
+            android:id="@+id/cpu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/description"
+            android:layout_marginTop="4dp"
+            android:textStyle="italic"
+            android:textColor="@android:color/black"
+            tools:text="CPU Type" />
+
+        <TextView
+            android:id="@+id/replicaCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cpu"
+            android:layout_marginTop="4dp"
+            android:textStyle="italic"
+            android:textColor="@android:color/black"
+            tools:text="Replica Count" />
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/replicaCount"
+            android:layout_marginTop="4dp"
+            android:textStyle="italic"
+            android:textColor="@android:color/black"
+            tools:text="Duration" />
+
+        <TextView
+            android:id="@+id/deadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/duration"
+            android:layout_marginTop="4dp"
+            android:textStyle="italic"
+            android:textColor="@android:color/holo_red_dark"
+            tools:text="A Deadline" />
+
         <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="40dp"

@@ -9,4 +9,15 @@
     <string name="enter_cloud_job_title"> Please enter a Cloud Job Title </string>
     <string name="save_cloud_job"> Save Cloud Job</string>
     <string name="delete_cloudJob">Delete Cloud Job (Icon)</string>
+    <string name="calendar_picker">Choose Deadline</string>
+    <string name="hint_replica">Replica Count: </string>
+    <string name="duration_string">Duration (mins): </string>
+    <string name="indefinite_duration">Indefinite: </string>
+    <string name="cpu_dropdown">Choose CPU</string>
+    <string-array name="cpu_types">
+        <item>Micro</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
 </resources>
