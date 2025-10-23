@@ -11,6 +11,8 @@
     <string name="delete_cloudJob">Delete Cloud Job (Icon)</string>
     <string name="calendar_picker">Choose Deadline</string>
     <string name="hint_replica">Replica Count: </string>
+    <string name="duration_string">Duration (mins): </string>
+    <string name="indefinite_duration">Indefinite: </string>
     <string name="cpu_dropdown">Choose CPU</string>
     <string-array name="cpu_types">
         <item>Micro</item>

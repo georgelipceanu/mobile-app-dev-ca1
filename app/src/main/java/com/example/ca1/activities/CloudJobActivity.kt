@@ -32,6 +32,9 @@ class CloudJobActivity : AppCompatActivity() {
         binding.replicaPicker.minValue = 1
         binding.replicaPicker.maxValue = 20
 
+        var durationFieldValue = 30
+        binding.durationValue.text = durationFieldValue.toString()
+
         if (intent.hasExtra("cloud_job_edit")) {
             edit = true
             cloudJob = intent.extras?.getParcelable("cloud_job_edit")!!
@@ -40,6 +43,7 @@ class CloudJobActivity : AppCompatActivity() {
             binding.deadlineField.setText(cloudJob.deadline)
             binding.CPUAutoComplete.setText(cloudJob.CPUType)
             binding.replicaPicker.value = cloudJob.replicas
+            if (cloudJob.duration > -1) binding.durationValue.text = cloudJob.duration.toString()
             binding.btnAdd.setText(R.string.save_cloud_job)
         }
 
@@ -71,12 +75,22 @@ class CloudJobActivity : AppCompatActivity() {
         val cpuAC = findViewById<AutoCompleteTextView>(R.id.CPUAutoComplete)
         cpuAC.setAdapter(cpuArrayAdapter)
 
+        binding.btnIncrease.setOnClickListener {
+            durationFieldValue += 5 //up and down increments of 5
+            binding.durationValue.text = durationFieldValue.toString()
+        }
+        binding.btnDecrease.setOnClickListener {
+            if (durationFieldValue > 0) durationFieldValue -= 5
+            binding.durationValue.text = durationFieldValue.toString()
+        }
+
         binding.btnAdd.setOnClickListener() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
             cloudJob.description = binding.description.text.toString()
             cloudJob.deadline = binding.deadlineField.text.toString()
             cloudJob.CPUType = binding.CPUAutoComplete.text.toString()
             cloudJob.replicas = binding.replicaPicker.value
+            cloudJob.duration = if (binding.indefinteCheckbox.isChecked) -1 else binding.durationValue.text.toString().toIntOrNull()!!
             if (cloudJob.title.isEmpty()) {
                 Snackbar.make(it,R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG).show()
             } else {

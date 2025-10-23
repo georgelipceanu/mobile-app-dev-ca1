@@ -49,10 +49,20 @@
             tools:text="Replica Count" />
 
         <TextView
-            android:id="@+id/deadline"
+            android:id="@+id/duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/replicaCount"
+            android:layout_marginTop="4dp"
+            android:textStyle="italic"
+            android:textColor="@android:color/black"
+            tools:text="Duration" />
+
+        <TextView
+            android:id="@+id/deadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/duration"
             android:layout_marginTop="4dp"
             android:textStyle="italic"
             android:textColor="@android:color/holo_red_dark"
