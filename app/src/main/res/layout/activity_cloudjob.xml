@@ -99,14 +99,30 @@
                     android:text="Choose CPU" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <NumberPicker
-                    android:id="@+id/replicaPicker"
-                    android:layout_width="113dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="@string/hint_replica"
-                    android:solidColor="#D5D5D5" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/labelReplicaCount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/hint_replica"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <NumberPicker
+                        android:id="@+id/replicaPicker"
+                        android:layout_width="113dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="8dp"
+                        android:hint="@string/hint_replica"
+                        android:solidColor="#D5D5D5" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btnAdd"
