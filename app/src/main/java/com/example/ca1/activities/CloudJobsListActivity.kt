@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ca1.R
 import com.example.ca1.adapters.CloudJobAdapter
@@ -17,6 +19,7 @@ import com.example.ca1.models.CloudJobModel
 class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityCloudJobsListBinding
+    private lateinit var adapter: CloudJobAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +32,18 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = CloudJobAdapter(app.cloudJobs.findAll(), this)
+        adapter = CloudJobAdapter(app.cloudJobs.findAll(), this)
+        binding.recyclerView.adapter = adapter
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                handleSearch(query)
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                handleSearch(newText)
+                return true
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -79,5 +93,16 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
         (binding.recyclerView.adapter)?.
         notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
         (binding.recyclerView.adapter)?.notifyDataSetChanged()
+    }
+
+    private fun handleSearch(query: String?) {
+        if (query.isNullOrEmpty()) adapter.submitList(app.cloudJobs.findAll())
+        else filterCloudJobs(query)
+    }
+
+    private fun filterCloudJobs(query: String?) {
+        val filteredList = if (!query.isNullOrBlank()) app.cloudJobs.findByTitle(query)
+        else app.cloudJobs.findAll()
+        adapter.submitList(filteredList)
     }
 }
