@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/recyclerview_gradient"
     tools:context="com.example.ca1.activities.CloudJobActivity">
 
     <RelativeLayout
@@ -79,6 +80,7 @@
                         android:layout_width="331dp"
                         android:layout_height="48dp"
                         android:layout_margin="8dp"
+                        android:backgroundTint="#673AB7"
                         android:clickable="true"
                         android:focusable="false"
                         android:hint="@string/calendar_picker"

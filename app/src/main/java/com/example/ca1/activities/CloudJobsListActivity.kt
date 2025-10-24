@@ -22,7 +22,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
         super.onCreate(savedInstanceState)
         binding = ActivityCloudJobsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbar.title = title
+        binding.toolbar.title = "Cloud Scheduler App"
         setSupportActionBar(binding.toolbar)
 
         app = application as MainApp
