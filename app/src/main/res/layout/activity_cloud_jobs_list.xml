@@ -19,7 +19,15 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="@color/colorPrimary" />
+            app:titleTextColor="@color/colorPrimary" >
+            <!-- ref for searchview: https://www.geeksforgeeks.org/kotlin/searchview-in-android-with-kotlin/-->
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:queryHint="@string/searchbar_hint"
+                android:iconifiedByDefault="false" />
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
