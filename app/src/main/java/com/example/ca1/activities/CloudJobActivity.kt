@@ -47,6 +47,10 @@ class CloudJobActivity : AppCompatActivity() {
         var durationFieldValue = 30
         binding.durationValue.text = durationFieldValue.toString()
 
+        binding.clearDeadlineButton.setOnClickListener {
+            binding.deadlineField.text?.clear()
+        }
+
         binding.deadlineField.setOnClickListener {
             val cal = Calendar.getInstance() // format "yyyy-MM-dd"
             val deadline = cloudJob.deadline
