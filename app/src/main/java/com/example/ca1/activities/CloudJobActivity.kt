@@ -32,9 +32,6 @@ class CloudJobActivity : AppCompatActivity() {
         binding.replicaPicker.minValue = 1
         binding.replicaPicker.maxValue = 20
 
-        var durationFieldValue = 30
-        binding.durationValue.text = durationFieldValue.toString()
-
         if (intent.hasExtra("cloud_job_edit")) {
             edit = true
             cloudJob = intent.extras?.getParcelable("cloud_job_edit")!!
@@ -46,6 +43,9 @@ class CloudJobActivity : AppCompatActivity() {
             if (cloudJob.duration > -1) binding.durationValue.text = cloudJob.duration.toString()
             binding.btnAdd.setText(R.string.save_cloud_job)
         }
+
+        var durationFieldValue = 30
+        binding.durationValue.text = durationFieldValue.toString()
 
         binding.deadlineField.setOnClickListener {
             val cal = Calendar.getInstance() // format "yyyy-MM-dd"

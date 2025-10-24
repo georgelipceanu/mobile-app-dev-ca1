@@ -5,7 +5,12 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="8dp"
-    android:elevation="24dp">
+    android:elevation="24dp"
+    app:cardCornerRadius="24dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="#FFDAE4"
+    android:foreground="?attr/selectableItemBackground" >
+    <!--ref for ?attr/selectableItemBackground ripple: https://hanru-yeh.medium.com/about-android-ripple-touch-feedback-on-different-api-level-fdfb6956b54f -->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,17 +30,18 @@
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_below="@id/cloudjobTitle"
             tools:text="A Description" />
 
         <TextView
             android:id="@+id/cpu"
-            android:layout_width="wrap_content"
+            android:layout_width="93dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/description"
             android:layout_marginTop="4dp"
-            android:textStyle="italic"
             android:textColor="@android:color/black"
+            android:textStyle="italic"
             tools:text="CPU Type" />
 
         <TextView
@@ -73,6 +79,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
+            android:backgroundTint="#00FFFFFF"
             android:contentDescription="@string/delete_cloudJob"
             android:src="@android:drawable/ic_menu_delete"
             app:tint="@color/colorAccent" />
