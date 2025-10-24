@@ -15,6 +15,7 @@
     <string name="indefinite_duration">Indefinite: </string>
     <string name="searchbar_hint">Search Cloud Jobs...</string>
     <string name="cpu_dropdown">Choose CPU</string>
+    <string name="ca_title">Cloud Scheduler App</string>
     <string-array name="cpu_types">
         <item>Micro</item>
         <item>Small</item>

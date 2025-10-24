@@ -25,7 +25,6 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
         super.onCreate(savedInstanceState)
         binding = ActivityCloudJobsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbar.title = "Cloud Scheduler App"
         setSupportActionBar(binding.toolbar)
 
         app = application as MainApp
@@ -65,9 +64,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
-                (binding.recyclerView.adapter)?.notifyDataSetChanged()                // update in RecyclerView for deleted jobs (ref: https://suragch.medium.com/updating-data-in-an-android-recyclerview-842e56adbfd8)
+                adapter.submitList(app.cloudJobs.findAll())
             }
         }
 
@@ -82,17 +79,13 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
-                (binding.recyclerView.adapter)?.notifyDataSetChanged()
+                adapter.submitList(app.cloudJobs.findAll())
             }
         }
 
     override fun onCloudJobDeleteIconClick(cloudjob: CloudJobModel) {
         app.cloudJobs.delete(cloudjob)
-        (binding.recyclerView.adapter)?.
-        notifyItemRangeChanged(0,app.cloudJobs.findAll().size)
-        (binding.recyclerView.adapter)?.notifyDataSetChanged()
+        adapter.submitList(app.cloudJobs.findAll())
     }
 
     private fun handleSearch(query: String?) {
