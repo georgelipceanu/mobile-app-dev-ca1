@@ -19,6 +19,9 @@ class CloudJobMemStore(context: Context) : CloudJobStore { // context needed for
     override fun findAll(): List<CloudJobModel> {
         return cloudJobs
     }
+    fun findByTitle(title: String): List<CloudJobModel> {
+        return cloudJobs.filter { it.title.contains(title, ignoreCase = true) }
+    }
 
     override fun create(cloudJob: CloudJobModel) {
         cloudJob.id = getId()

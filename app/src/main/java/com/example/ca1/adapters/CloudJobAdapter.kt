@@ -15,6 +15,7 @@ interface CloudJobListener {
 class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
                        private val listener: CloudJobListener) :
     RecyclerView.Adapter<CloudJobAdapter.MainHolder>() {
+    private val displayedJobs = cloudJobs.toMutableList() // ref: https://stackoverflow.com/questions/46846025/how-to-clone-or-copy-a-list-in-kotlin
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardCloudJobBinding
@@ -24,11 +25,17 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val cloudJob = cloudJobs[holder.adapterPosition]
+        val cloudJob = displayedJobs[holder.adapterPosition]
         holder.bind(cloudJob, listener)
     }
 
-    override fun getItemCount(): Int = cloudJobs.size
+    override fun getItemCount(): Int = displayedJobs.size
+
+    fun submitList(newList: List<CloudJobModel>) {
+        displayedJobs.clear()
+        displayedJobs.addAll(newList)
+        notifyDataSetChanged()
+    }
 
     class MainHolder(private val binding: CardCloudJobBinding) :
         RecyclerView.ViewHolder(binding.root) {
