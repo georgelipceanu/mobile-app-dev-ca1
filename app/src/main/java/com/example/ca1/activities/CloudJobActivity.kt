@@ -92,7 +92,7 @@ class CloudJobActivity : AppCompatActivity() {
             cloudJob.title = binding.cloudjobTitle.text.toString()
             cloudJob.description = binding.description.text.toString()
             cloudJob.deadline = binding.deadlineField.text.toString()
-            cloudJob.CPUType = binding.CPUAutoComplete.text.toString()
+            cloudJob.CPUType = if (binding.CPUAutoComplete.text.toString().equals("Choose CPU")) "Micro" else  binding.CPUAutoComplete.text.toString()
             cloudJob.replicas = binding.replicaPicker.value
             cloudJob.duration = if (binding.indefinteCheckbox.isChecked) -1 else binding.durationValue.text.toString().toIntOrNull()!!
             if (cloudJob.title.isEmpty()) {
