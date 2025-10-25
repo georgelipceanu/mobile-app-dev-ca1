@@ -5,15 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ca1.R
 import com.example.ca1.adapters.CloudJobAdapter
 import com.example.ca1.adapters.CloudJobListener
+import com.example.ca1.api.CarbonIntensityResponse
+import com.example.ca1.api.RetrofitInstance
+import com.example.ca1.BuildConfig
+import retrofit2.Callback
 import com.example.ca1.databinding.ActivityCloudJobsListBinding
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
+import retrofit2.Call
+import retrofit2.Response
 
 class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
     lateinit var app: MainApp
@@ -96,5 +103,35 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
         val filteredList = if (!query.isNullOrBlank()) app.cloudJobs.findByTitle(query)
         else app.cloudJobs.findAll()
         adapter.submitList(filteredList)
+    }
+
+    private fun calculateEmissions(
+        cpuType: String,
+        durationMinutes: Int,
+        onSuccess: (emissionsGrams: Double, intensity: Double) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = BuildConfig.ELECTRICITYMAPS_API_KEY
+        RetrofitInstance.retrofit
+            .getCarbonIntensity(token, "IE")
+            .enqueue(object : Callback<CarbonIntensityResponse> {
+                override fun onResponse(
+                    call: Call<CarbonIntensityResponse?>,
+                    response: Response<CarbonIntensityResponse?>
+                ) {
+                    if (!response.isSuccessful) {
+                        onError(IllegalStateException("HTTP ${response.code()}"))
+                        return
+                    }
+                    val intensity = response.body()!!.carbonIntensity
+                    val cpuPowerMap = mapOf("micro" to 0.01, "small" to 0.05, "medium" to 0.10, "large" to 0.20)
+                    val hours = durationMinutes / 60.0
+                    val emissions = intensity * (cpuPowerMap[cpuType.lowercase()] ?: 0.10) * hours
+                    onSuccess(emissions, intensity)
+                }
+                override fun onFailure(call: Call<CarbonIntensityResponse?>, t: Throwable) {
+                    Toast.makeText(this@CloudJobsListActivity, "Error: ${t.message}", Toast.LENGTH_LONG)
+                }
+            })
     }
 }
