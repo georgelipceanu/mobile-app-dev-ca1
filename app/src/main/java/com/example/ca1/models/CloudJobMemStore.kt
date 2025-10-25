@@ -13,7 +13,10 @@ internal fun getId(): Long {
 }
 
 class CloudJobMemStore(context: Context) : CloudJobStore { // context needed for File(context.filesDir, file)
-    val json = Json { prettyPrint = true }
+    val json = Json { prettyPrint = true
+        encodeDefaults = true
+        explicitNulls = true
+    }
     val cloudJobs = ArrayList<CloudJobModel>()
     val file = File(context.filesDir, "cloudjobs.json") // ref: https://developer.android.com/training/data-storage/app-specific
     override fun findAll(): List<CloudJobModel> {
@@ -39,6 +42,7 @@ class CloudJobMemStore(context: Context) : CloudJobStore { // context needed for
             foundCloudJob.CPUType = cloudJob.CPUType
             foundCloudJob.replicas = cloudJob.replicas
             foundCloudJob.duration = cloudJob.duration
+            foundCloudJob.emissions = cloudJob.emissions
             logAll()
             save()
         }
