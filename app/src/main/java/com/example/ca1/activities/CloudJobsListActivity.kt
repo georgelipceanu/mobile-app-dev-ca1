@@ -70,6 +70,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == RESULT_OK) {
+                refreshEmissionsForVisibleJobs()
                 adapter.submitList(app.cloudJobs.findAll())
             }
         }
@@ -85,12 +86,14 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == RESULT_OK) {
+                refreshEmissionsForVisibleJobs()
                 adapter.submitList(app.cloudJobs.findAll())
             }
         }
 
     override fun onCloudJobDeleteIconClick(cloudjob: CloudJobModel) {
         app.cloudJobs.delete(cloudjob)
+        refreshEmissionsForVisibleJobs()
         adapter.submitList(app.cloudJobs.findAll())
     }
 
@@ -108,6 +111,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
     private fun calculateEmissions(
         cpuType: String,
         durationMinutes: Int,
+        replicas: Int,
         onSuccess: (emissionsGrams: Double, intensity: Double) -> Unit,
         onError: (Throwable) -> Unit
     ) {
@@ -126,12 +130,29 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
                     val intensity = response.body()!!.carbonIntensity
                     val cpuPowerMap = mapOf("micro" to 0.01, "small" to 0.05, "medium" to 0.10, "large" to 0.20)
                     val hours = durationMinutes / 60.0
-                    val emissions = intensity * (cpuPowerMap[cpuType.lowercase()] ?: 0.10) * hours
+                    val emissions = intensity * (cpuPowerMap[cpuType.lowercase()] ?: 0.10) * hours * replicas
                     onSuccess(emissions, intensity)
                 }
                 override fun onFailure(call: Call<CarbonIntensityResponse?>, t: Throwable) {
                     Toast.makeText(this@CloudJobsListActivity, "Error: ${t.message}", Toast.LENGTH_LONG)
                 }
             })
+    }
+
+    private fun refreshEmissionsForVisibleJobs() {
+        val cloudJobs = app.cloudJobs.findAll()
+        for (job in cloudJobs) {
+            if (job.duration <= 0) continue
+            calculateEmissions(
+                cpuType = job.CPUType,
+                durationMinutes = job.duration,
+                replicas = job.replicas,
+                onSuccess = { emissions, _ ->
+                    job.emissions = emissions
+                    adapter.notifyItemChanged(app.cloudJobs.cloudJobs.indexOf(job))
+                },
+                onError = {}
+            )
+        }
     }
 }

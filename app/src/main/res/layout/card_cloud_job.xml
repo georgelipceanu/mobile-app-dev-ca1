@@ -74,6 +74,16 @@
             android:textColor="@android:color/holo_red_dark"
             tools:text="A Deadline" />
 
+        <TextView
+            android:id="@+id/emissions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/deadline"
+            android:layout_marginTop="4dp"
+            android:textStyle="italic"
+            android:textColor="@android:color/black"
+            tools:text="Emissions " />
+
         <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="40dp"

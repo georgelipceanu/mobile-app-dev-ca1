@@ -12,7 +12,7 @@ constraintlayout = "2.2.1"
 timber = "1.5.1"
 kotlinPlugin = "2.2.10"
 kotlinx-serialization =  "1.9.0" # following https://kotlinlang.org/docs/serialization.html#serialize-and-deserialize-json
-retrofit = "2.9.0"  # following https://www.geeksforgeeks.org/android/introduction-retofit-2-android-set-1/
+retrofit = "3.0.0"  # following https://www.geeksforgeeks.org/android/introduction-retofit-2-android-set-1/
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

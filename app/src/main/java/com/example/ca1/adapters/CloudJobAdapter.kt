@@ -51,7 +51,7 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
                 binding.duration.isVisible = true
                 binding.duration.text = "${cloudJob.duration} mins"
             }
-
+            binding.emissions.text = if (cloudJob.emissions != null) "Emissions: ${cloudJob.emissions} g CO₂" else "Emissions: Couldn't Calculate"
             binding.root.setOnClickListener { listener.onCloudJobClick(cloudJob) }
             binding.deleteButton.setOnClickListener { listener.onCloudJobDeleteIconClick(cloudJob) }
         }

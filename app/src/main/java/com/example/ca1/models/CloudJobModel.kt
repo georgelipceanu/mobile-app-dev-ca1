@@ -12,5 +12,6 @@ data class CloudJobModel(var id: Long = 0,
                          var deadline: String = "",
                          var CPUType: String = "Micro",
                          var replicas: Int = 1,
-                         var duration: Int = -1     // default = no duration/runs indefinitely (eg. web server, database, etc.)
+                         var duration: Int = -1,     // default = no duration/runs indefinitely (eg. web server, database, etc.)
+                         var emissions: Double? = null // default null if API doesn't work properly
 ) : Parcelable
