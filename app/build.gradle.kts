@@ -17,6 +17,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "ELECTRICITYMAPS_API_KEY",
+            "\"${project.findProperty("ELECTRICITYMAPS_API_KEY") ?: ""}\""
+        )
     }
 
     buildTypes {
@@ -28,6 +34,12 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -50,6 +62,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.timber)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
