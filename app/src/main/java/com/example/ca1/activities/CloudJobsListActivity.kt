@@ -151,6 +151,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
                 replicas = job.replicas,
                 onSuccess = { emissions, _ ->
                     job.emissions = emissions
+                    app.cloudJobs.update(job)
                     adapter.notifyItemChanged(app.cloudJobs.cloudJobs.indexOf(job))
                 },
                 onError = {}
