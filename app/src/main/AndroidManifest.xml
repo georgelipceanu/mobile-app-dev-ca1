@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ca1">
         <activity android:name=".activities.CloudJobsListActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Ca1.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

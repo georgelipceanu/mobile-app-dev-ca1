@@ -21,6 +21,7 @@ import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import retrofit2.Call
 import retrofit2.Response
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
     lateinit var app: MainApp
@@ -28,6 +29,7 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
     private lateinit var adapter: CloudJobAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityCloudJobsListBinding.inflate(layoutInflater)
         setContentView(binding.root)

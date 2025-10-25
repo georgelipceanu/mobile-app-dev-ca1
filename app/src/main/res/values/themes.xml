@@ -13,4 +13,11 @@
     </style>
 
     <style name="Theme.Ca1" parent="Base.Theme.Ca1" />
+
+    <!-- ref for splashscreen: https://www.geeksforgeeks.org/android/splash-screen-in-android/ -->
+    <style name="Theme.Ca1.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#D8D7D7</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_inset</item>
+        <item name="postSplashScreenTheme">@style/Theme.Ca1</item>
+    </style>
 </resources>
