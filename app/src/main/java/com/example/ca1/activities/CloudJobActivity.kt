@@ -13,6 +13,7 @@ import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
+import timber.log.Timber.i
 class CloudJobActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCloudjobBinding
     var cloudJob = CloudJobModel()
@@ -106,6 +107,10 @@ class CloudJobActivity : AppCompatActivity() {
             }
             setResult(RESULT_OK)
             finish()
+        }
+
+        binding.chooseImage.setOnClickListener {
+            i("Select image")
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -22,4 +22,5 @@
         <item>Medium</item>
         <item>Large</item>
     </string-array>
+    <string name="button_addImage"> Add Image </string>
 </resources>
