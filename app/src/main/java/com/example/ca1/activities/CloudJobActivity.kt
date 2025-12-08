@@ -1,14 +1,18 @@
 package com.example.ca1.activities
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ca1.R
 import com.example.ca1.databinding.ActivityCloudjobBinding
+import com.example.ca1.helpers.showImagePicker
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import com.google.android.material.snackbar.Snackbar
@@ -19,11 +23,29 @@ class CloudJobActivity : AppCompatActivity() {
     var cloudJob = CloudJobModel()
     var edit = false
     lateinit var app : MainApp
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCloudjobBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        registerImagePickerCallback()
 
         binding.toolbarAdd.title = "Cloud Job Config"
         setSupportActionBar(binding.toolbarAdd)
@@ -110,7 +132,7 @@ class CloudJobActivity : AppCompatActivity() {
         }
 
         binding.chooseImage.setOnClickListener {
-            i("Select image")
+            showImagePicker(imageIntentLauncher)
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
