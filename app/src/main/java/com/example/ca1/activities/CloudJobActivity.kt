@@ -70,6 +70,9 @@ class CloudJobActivity : AppCompatActivity() {
             binding.replicaPicker.value = cloudJob.replicas
             if (cloudJob.duration > -1) binding.durationValue.text = cloudJob.duration.toString()
             binding.btnAdd.setText(R.string.save_cloud_job)
+            Picasso.get()
+                .load(cloudJob.image)
+                .into(binding.cloudjobImage)
         }
 
         var durationFieldValue = 30
