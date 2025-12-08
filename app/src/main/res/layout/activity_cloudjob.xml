@@ -203,7 +203,7 @@
                     tools:ignore="VisualLintButtonSize" />
 
                 <ImageView
-                    android:id="@+id/placemarkImage"
+                    android:id="@+id/cloudjobImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAccessibility="no"

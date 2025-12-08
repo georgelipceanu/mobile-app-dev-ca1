@@ -1,8 +1,10 @@
 package com.example.ca1.models
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Parcelize
 @Serializable
@@ -13,5 +15,7 @@ data class CloudJobModel(var id: Long = 0,
                          var CPUType: String = "Micro",
                          var replicas: Int = 1,
                          var duration: Int = -1,     // default = no duration/runs indefinitely (eg. web server, database, etc.)
-                         var emissions: Double? = null // default null if API doesn't work properly
+                         var emissions: Double? = null, // default null if API doesn't work properly
+                         @Transient
+                         var image: Uri = Uri.EMPTY   // transient for now since i plan on doing cloud based persistence, which means making a separate serializer for URI useless
 ) : Parcelable

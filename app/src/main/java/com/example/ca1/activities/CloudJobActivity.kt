@@ -16,6 +16,7 @@ import com.example.ca1.helpers.showImagePicker
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import java.util.Calendar
 import timber.log.Timber.i
 class CloudJobActivity : AppCompatActivity() {
@@ -33,6 +34,10 @@ class CloudJobActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
+                            cloudJob.image = result.data!!.data!!
+                            Picasso.get()
+                                .load(cloudJob.image)
+                                .into(binding.cloudjobImage)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
