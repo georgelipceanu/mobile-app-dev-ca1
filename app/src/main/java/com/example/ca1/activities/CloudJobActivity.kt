@@ -2,6 +2,7 @@ package com.example.ca1.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -38,6 +39,7 @@ class CloudJobActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(cloudJob.image)
                                 .into(binding.cloudjobImage)
+                            binding.chooseImage.setText(R.string.change_cloudjob_image)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
@@ -73,6 +75,9 @@ class CloudJobActivity : AppCompatActivity() {
             Picasso.get()
                 .load(cloudJob.image)
                 .into(binding.cloudjobImage)
+            if (cloudJob.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_cloudjob_image)
+            }
         }
 
         var durationFieldValue = 30
