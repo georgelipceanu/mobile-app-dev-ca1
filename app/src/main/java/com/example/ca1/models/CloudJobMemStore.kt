@@ -43,6 +43,7 @@ class CloudJobMemStore(context: Context) : CloudJobStore { // context needed for
             foundCloudJob.replicas = cloudJob.replicas
             foundCloudJob.duration = cloudJob.duration
             foundCloudJob.emissions = cloudJob.emissions
+            foundCloudJob.image = cloudJob.image
             logAll()
             save()
         }

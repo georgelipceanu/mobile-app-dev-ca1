@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ca1.databinding.CardCloudJobBinding
 import com.example.ca1.models.CloudJobModel
+import com.squareup.picasso.Picasso
 
 interface CloudJobListener {
     fun onCloudJobClick(cloudjob: CloudJobModel)
@@ -52,6 +53,7 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
                 binding.duration.text = "${cloudJob.duration} mins"
             }
             binding.emissions.text = if (cloudJob.emissions != null) "Emissions: ${cloudJob.emissions} g CO₂" else "Emissions: Couldn't Calculate"
+            Picasso.get().load(cloudJob.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onCloudJobClick(cloudJob) }
             binding.deleteButton.setOnClickListener { listener.onCloudJobDeleteIconClick(cloudJob) }
         }

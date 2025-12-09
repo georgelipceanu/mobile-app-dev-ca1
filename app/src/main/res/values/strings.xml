@@ -22,4 +22,7 @@
         <item>Medium</item>
         <item>Large</item>
     </string-array>
+    <string name="button_addImage"> Add Image </string>
+    <string name="select_cloudjob_image">Select cloudjob image</string>
+    <string name="change_cloudjob_image">Change cloudjob image</string>
 </resources>
