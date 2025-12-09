@@ -26,4 +26,5 @@
     <string name="select_cloudjob_image">Select cloudjob image</string>
     <string name="change_cloudjob_image">Change cloudjob image</string>
     <string name="button_database_location">Set Database Location</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

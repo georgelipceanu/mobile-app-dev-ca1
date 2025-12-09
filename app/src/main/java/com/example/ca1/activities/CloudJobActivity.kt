@@ -26,6 +26,7 @@ class CloudJobActivity : AppCompatActivity() {
     var edit = false
     lateinit var app : MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
@@ -47,12 +48,19 @@ class CloudJobActivity : AppCompatActivity() {
             }
     }
 
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCloudjobBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         registerImagePickerCallback()
+        registerMapCallback()
 
         binding.toolbarAdd.title = "Cloud Job Config"
         setSupportActionBar(binding.toolbarAdd)
@@ -150,6 +158,8 @@ class CloudJobActivity : AppCompatActivity() {
 
         binding.cloudjobLocation.setOnClickListener {
             i ("Set Location Pressed")
+            val launcherIntent = Intent(this, MapsActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
