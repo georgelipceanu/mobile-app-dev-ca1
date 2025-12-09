@@ -218,7 +218,7 @@
                     android:background="@color/colorAccent"
                     android:padding="8dp"
                     android:stateListAnimator="@null"
-                    android:text="@string/button_database_location"
+                    android:text="@string/button_datacentre_location"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"/>
 

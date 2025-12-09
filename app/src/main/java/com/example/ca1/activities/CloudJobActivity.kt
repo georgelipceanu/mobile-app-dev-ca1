@@ -16,6 +16,7 @@ import com.example.ca1.databinding.ActivityCloudjobBinding
 import com.example.ca1.helpers.showImagePicker
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
+import com.example.ca1.models.DataCentreLocation
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import java.util.Calendar
@@ -157,8 +158,9 @@ class CloudJobActivity : AppCompatActivity() {
         }
 
         binding.cloudjobLocation.setOnClickListener {
-            i ("Set Location Pressed")
+            val dataCentreLocation = DataCentreLocation(52.245696, -7.139102, 15f)
             val launcherIntent = Intent(this, MapsActivity::class.java)
+                .putExtra("dataCentreLocation", dataCentreLocation)
             mapIntentLauncher.launch(launcherIntent)
         }
     }
