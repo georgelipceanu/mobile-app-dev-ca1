@@ -28,6 +28,7 @@ class CloudJobActivity : AppCompatActivity() {
     lateinit var app : MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    var dataCentreLocation = DataCentreLocation(52.245696, -7.139102, 15f)
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
@@ -52,7 +53,19 @@ class CloudJobActivity : AppCompatActivity() {
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { i("Map Loaded") }
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Data Centre ${result.data.toString()}")
+                            //dataCentreLocation = result.data!!.extras?.getParcelable("location",Location::class.java)!!
+                            dataCentreLocation = result.data!!.extras?.getParcelable("dataCentreLocation")!!
+                            i("Data Centre Location == $dataCentreLocation")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -158,7 +171,6 @@ class CloudJobActivity : AppCompatActivity() {
         }
 
         binding.cloudjobLocation.setOnClickListener {
-            val dataCentreLocation = DataCentreLocation(52.245696, -7.139102, 15f)
             val launcherIntent = Intent(this, MapsActivity::class.java)
                 .putExtra("dataCentreLocation", dataCentreLocation)
             mapIntentLauncher.launch(launcherIntent)
