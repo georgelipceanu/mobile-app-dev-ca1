@@ -17,7 +17,8 @@ import com.example.ca1.databinding.ActivityMapsBinding
 import com.example.ca1.models.DataCentreLocation
 import com.google.android.gms.maps.model.Marker
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener,
+    GoogleMap.OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -48,6 +49,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             .draggable(true)
             .position(loc)
         map.addMarker(options)
+        map.setOnMarkerClickListener(this)
         map.setOnMarkerDragListener(this)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, dataCentreLocation.zoom))
     }
@@ -61,4 +63,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     override fun onMarkerDragStart(p0: Marker) { }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val loc = LatLng(dataCentreLocation.lat, dataCentreLocation.lng)
+        marker.snippet = "GPS : $loc"
+        return false
+    }
 }

@@ -28,7 +28,7 @@ class CloudJobActivity : AppCompatActivity() {
     lateinit var app : MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-    var dataCentreLocation = DataCentreLocation(52.245696, -7.139102, 15f)
+   // var dataCentreLocation = DataCentreLocation(52.245696, -7.139102, 15f)
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
@@ -59,8 +59,11 @@ class CloudJobActivity : AppCompatActivity() {
                         if (result.data != null) {
                             i("Got Data Centre ${result.data.toString()}")
                             //dataCentreLocation = result.data!!.extras?.getParcelable("location",Location::class.java)!!
-                            dataCentreLocation = result.data!!.extras?.getParcelable("dataCentreLocation")!!
+                            val dataCentreLocation = result.data!!.extras?.getParcelable<DataCentreLocation>("dataCentreLocation")!!
                             i("Data Centre Location == $dataCentreLocation")
+                            cloudJob.lat = dataCentreLocation.lat
+                            cloudJob.lng = dataCentreLocation.lng
+                            cloudJob.zoom = dataCentreLocation.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
@@ -171,6 +174,12 @@ class CloudJobActivity : AppCompatActivity() {
         }
 
         binding.cloudjobLocation.setOnClickListener {
+            val dataCentreLocation = DataCentreLocation(52.245696, -7.139102, 15f)
+            if (cloudJob.zoom != 0f) {
+                dataCentreLocation.lat =  cloudJob.lat
+                dataCentreLocation.lng = cloudJob.lng
+                dataCentreLocation.zoom = cloudJob.zoom
+            }
             val launcherIntent = Intent(this, MapsActivity::class.java)
                 .putExtra("dataCentreLocation", dataCentreLocation)
             mapIntentLauncher.launch(launcherIntent)
