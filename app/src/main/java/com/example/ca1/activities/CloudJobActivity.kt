@@ -147,6 +147,10 @@ class CloudJobActivity : AppCompatActivity() {
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
+
+        binding.cloudjobLocation.setOnClickListener {
+            i ("Set Location Pressed")
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.cloud_job_menu, menu)
