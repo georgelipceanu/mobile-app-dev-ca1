@@ -27,6 +27,10 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityCloudJobsListBinding
     private lateinit var adapter: CloudJobAdapter
+    private val mapIntentLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        )    { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -63,6 +67,10 @@ class CloudJobsListActivity : AppCompatActivity(), CloudJobListener {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, CloudJobActivity::class.java)
                 getResult.launch(launcherIntent)
+            }
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, CloudJobMapsActivity::class.java)
+                mapIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)

@@ -14,6 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ca2">
+        <activity
+            android:name=".activities.CloudJobMapsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.Ca2" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
