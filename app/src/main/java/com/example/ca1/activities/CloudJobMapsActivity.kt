@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.ca1.R
 import com.example.ca1.databinding.ActivityCloudJobMapsBinding
 import com.example.ca1.databinding.ContentCloudJobMapsBinding
+import com.example.ca1.main.MainApp
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
 class CloudJobMapsActivity : AppCompatActivity() {
+    lateinit var app: MainApp
     private lateinit var binding: ActivityCloudJobMapsBinding
     private lateinit var contentBinding: ContentCloudJobMapsBinding
     lateinit var map: GoogleMap
@@ -26,10 +28,15 @@ class CloudJobMapsActivity : AppCompatActivity() {
 
         binding = ActivityCloudJobMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        app = application as MainApp
         setSupportActionBar(binding.toolbar)
         contentBinding = ContentCloudJobMapsBinding.bind(binding.root)
         contentBinding.mapView.onCreate(savedInstanceState)
+
+        contentBinding.mapView.getMapAsync {
+            map = it
+            configureMap()
+        }
     }
 
     override fun onDestroy() {
@@ -55,5 +62,15 @@ class CloudJobMapsActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         contentBinding.mapView.onSaveInstanceState(outState)
+    }
+
+    private fun configureMap() {
+        map.uiSettings.isZoomControlsEnabled = true
+        app.cloudJobs.findAll().forEach {
+            val loc = LatLng(it.lat, it.lng)
+            val options = MarkerOptions().title(it.title).position(loc)
+            map.addMarker(options)?.tag = it.id
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
+        }
     }
 }
