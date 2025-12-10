@@ -16,6 +16,7 @@ import com.example.ca1.databinding.ActivityCloudjobBinding
 import com.example.ca1.helpers.showImagePicker
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
+import com.example.ca1.models.DataCentreLocation
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import java.util.Calendar
@@ -26,6 +27,8 @@ class CloudJobActivity : AppCompatActivity() {
     var edit = false
     lateinit var app : MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+   // var dataCentreLocation = DataCentreLocation(52.245696, -7.139102, 15f)
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
@@ -47,12 +50,34 @@ class CloudJobActivity : AppCompatActivity() {
             }
     }
 
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Data Centre ${result.data.toString()}")
+                            //dataCentreLocation = result.data!!.extras?.getParcelable("location",Location::class.java)!!
+                            val dataCentreLocation = result.data!!.extras?.getParcelable<DataCentreLocation>("dataCentreLocation")!!
+                            i("Data Centre Location == $dataCentreLocation")
+                            cloudJob.lat = dataCentreLocation.lat
+                            cloudJob.lng = dataCentreLocation.lng
+                            cloudJob.zoom = dataCentreLocation.zoom
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCloudjobBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         registerImagePickerCallback()
+        registerMapCallback()
 
         binding.toolbarAdd.title = "Cloud Job Config"
         setSupportActionBar(binding.toolbarAdd)
@@ -146,6 +171,18 @@ class CloudJobActivity : AppCompatActivity() {
 
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
+        }
+
+        binding.cloudjobLocation.setOnClickListener {
+            val dataCentreLocation = DataCentreLocation(52.245696, -7.139102, 15f)
+            if (cloudJob.zoom != 0f) {
+                dataCentreLocation.lat =  cloudJob.lat
+                dataCentreLocation.lng = cloudJob.lng
+                dataCentreLocation.zoom = cloudJob.zoom
+            }
+            val launcherIntent = Intent(this, MapsActivity::class.java)
+                .putExtra("dataCentreLocation", dataCentreLocation)
+            mapIntentLauncher.launch(launcherIntent)
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

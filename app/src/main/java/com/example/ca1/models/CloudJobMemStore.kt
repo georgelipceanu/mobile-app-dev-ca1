@@ -44,6 +44,9 @@ class CloudJobMemStore(context: Context) : CloudJobStore { // context needed for
             foundCloudJob.duration = cloudJob.duration
             foundCloudJob.emissions = cloudJob.emissions
             foundCloudJob.image = cloudJob.image
+            foundCloudJob.lat = cloudJob.lat
+            foundCloudJob.zoom = cloudJob.zoom
+            foundCloudJob.lng = cloudJob.lng
             logAll()
             save()
         }
