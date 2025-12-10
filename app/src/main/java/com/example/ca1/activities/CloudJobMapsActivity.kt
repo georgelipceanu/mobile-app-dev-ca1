@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
-class CloudJobMapsActivity : AppCompatActivity() {
+class CloudJobMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityCloudJobMapsBinding
     private lateinit var contentBinding: ContentCloudJobMapsBinding
@@ -72,5 +72,12 @@ class CloudJobMapsActivity : AppCompatActivity() {
             map.addMarker(options)?.tag = it.id
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
         }
+        map.setOnMarkerClickListener(this)
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        contentBinding.currentTitle.text = marker.title
+
+        return false
     }
 }
