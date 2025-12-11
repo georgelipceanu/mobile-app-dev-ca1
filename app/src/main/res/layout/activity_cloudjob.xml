@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/recyclerview_gradient"
-    tools:context="com.example.ca1.activities.CloudJobActivity">
+    tools:context="com.example.ca1.activities.CloudJobView">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -42,7 +42,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".activities.CloudJobActivity">
+        <activity android:name=".activities.CloudJobView">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
