@@ -26,6 +26,11 @@ class CloudJobMemStore(context: Context) : CloudJobStore { // context needed for
         return cloudJobs.filter { it.title.contains(title, ignoreCase = true) }
     }
 
+    override fun findById(id:Long) : CloudJobModel? {
+        val foundPlacemark: CloudJobModel? = cloudJobs.find { it.id == id }
+        return foundPlacemark
+    }
+
     override fun create(cloudJob: CloudJobModel) {
         cloudJob.id = getId()
         cloudJobs.add(cloudJob)

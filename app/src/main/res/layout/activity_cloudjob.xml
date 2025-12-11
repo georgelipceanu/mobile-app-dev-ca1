@@ -189,26 +189,36 @@
                         android:layout_height="match_parent" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/chooseImage"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:background="@color/colorAccent"
-                    android:importantForAccessibility="no"
-                    android:padding="8dp"
-                    android:text="@string/button_addImage"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"
-                    tools:ignore="VisualLintButtonSize" />
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/cloudjobImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:importantForAccessibility="no"
-                    app:srcCompat="@mipmap/ic_launcher"
-                    tools:ignore="ImageContrastCheck" />
+
+                    <Button
+                        android:id="@+id/chooseImage"
+                        android:layout_width="142dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:background="@color/colorAccent"
+                        android:importantForAccessibility="no"
+                        android:padding="8dp"
+                        android:text="@string/button_addImage"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        tools:ignore="VisualLintButtonSize" />
+
+                    <ImageView
+                        android:id="@+id/cloudjobImage"
+                        android:layout_width="198dp"
+                        android:layout_height="wrap_content"
+                        android:importantForAccessibility="no"
+                        app:srcCompat="@mipmap/ic_launcher"
+                        tools:ignore="ImageContrastCheck" />
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/cloudjobLocation"

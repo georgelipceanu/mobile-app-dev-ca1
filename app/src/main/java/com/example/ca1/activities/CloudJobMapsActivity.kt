@@ -16,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.squareup.picasso.Picasso
 
 class CloudJobMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     lateinit var app: MainApp
@@ -76,8 +77,11 @@ class CloudJobMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        contentBinding.currentTitle.text = marker.title
-
+        val tag = marker.tag as Long
+        val cloudjob = app.cloudJobs.findById(tag)
+        contentBinding.currentTitle.text = cloudjob!!.title
+        contentBinding.currentDescription.text = cloudjob.description
+        Picasso.get().load(cloudjob.image).into(contentBinding.imageView)
         return false
     }
 }
