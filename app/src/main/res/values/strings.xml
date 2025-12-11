@@ -26,5 +26,9 @@
     <string name="select_cloudjob_image">Select Cloud Job image</string>
     <string name="change_cloudjob_image">Change Cloud Job image</string>
     <string name="button_datacentre_location">Set Data Centre Location</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps">Map of All Cloud Jobs</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="select_placemark_image">Select image</string>
+    <string name="change_placemark_image">Change image</string>
 </resources>

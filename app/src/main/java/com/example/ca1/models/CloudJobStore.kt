@@ -6,4 +6,5 @@ interface CloudJobStore {
 
     fun update(cloudJob: CloudJobModel)
     fun delete(cloudJob: CloudJobModel)
+    fun findById(id:Long) : CloudJobModel?
 }
