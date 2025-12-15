@@ -16,14 +16,11 @@ class EditDataCentreLocationView : AppCompatActivity(), OnMapReadyCallback,
 
     private lateinit var map: GoogleMap
     lateinit var presenter: EditDataCentreLocationPresenter
-    var location = DataCentreLocation()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
+        setContentView(R.layout.activity_maps)
         presenter = EditDataCentreLocationPresenter(this)
-        //location = intent.extras?.getParcelable("location",Location::class.java)!!
-        location = intent.extras?.getParcelable<DataCentreLocation>("location")!!
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)

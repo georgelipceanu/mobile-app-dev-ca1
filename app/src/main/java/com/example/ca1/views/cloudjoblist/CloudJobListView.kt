@@ -56,8 +56,8 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
     }
 
     fun onRefresh() {
-        binding.recyclerView.adapter?.
-        notifyItemRangeChanged(0, presenter.getCloudJobs().size)
+        binding.recyclerView.adapter =
+            CloudJobAdapter(presenter.getCloudJobs(), this)
     }
 
     fun onDelete(position: Int) {

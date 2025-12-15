@@ -1,14 +1,14 @@
-package com.example.ca1.activities
+package com.example.ca1.views.cloudjob
 
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ca1.R
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import com.example.ca1.main.MainApp
 import com.example.ca1.databinding.ActivityCloudjobBinding
 import com.example.ca1.models.CloudJobModel
 import timber.log.Timber.i
@@ -28,6 +28,12 @@ class CloudJobView : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
 
         presenter = CloudJobPresenter(this)
+        presenter.initForm()
+
+        binding.deadlineField.setOnClickListener { presenter.doPickDeadline() }
+        binding.clearDeadlineButton.setOnClickListener { presenter.doClearDeadline() }
+        binding.btnIncrease.setOnClickListener { presenter.doIncreaseDuration() }
+        binding.btnDecrease.setOnClickListener { presenter.doDecreaseDuration() }
 
         binding.chooseImage.setOnClickListener {
             presenter.cacheCloudJob(binding.cloudjobTitle.text.toString(), binding.description.text.toString())
@@ -44,8 +50,13 @@ class CloudJobView : AppCompatActivity() {
                 Snackbar.make(binding.root, R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG)
                     .show()
             } else {
-                // presenter.cachecloudJob(binding.cloudJobTitle.text.toString(), binding.description.text.toString())  
-                presenter.doAddOrSave(binding.cloudjobTitle.text.toString(), binding.description.text.toString())
+                presenter.doAddOrSave(
+                    title = binding.cloudjobTitle.text.toString(),
+                    description = binding.description.text.toString(),
+                    cpuTypeText = binding.CPUAutoComplete.text.toString(),
+                    replicas = binding.replicaPicker.value,
+                    isIndefinite = binding.indefinteCheckbox.isChecked
+                )
             }
         }
     }
@@ -88,5 +99,22 @@ class CloudJobView : AppCompatActivity() {
             .load(image)
             .into(binding.cloudjobImage)
         binding.chooseImage.setText(R.string.change_cloudjob_image)
+    }
+
+    fun setReplicaPickerBounds(min: Int, max: Int) {
+        binding.replicaPicker.minValue = min
+        binding.replicaPicker.maxValue = max
+    }
+
+    fun bindCpuAdapter(adapter: ArrayAdapter<String>) {
+        binding.CPUAutoComplete.setAdapter(adapter)
+    }
+
+    fun showDuration(value: Int) {
+        binding.durationValue.text = value.toString()
+    }
+
+    fun showDeadline(value: String) {
+        binding.deadlineField.setText(value)
     }
 }

@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.ca1.BuildConfig
-import com.example.ca1.activities.CloudJobView
+import com.example.ca1.views.cloudjob.CloudJobView
 import com.example.ca1.activities.CloudJobMapsActivity
 import com.example.ca1.api.CarbonIntensityResponse
 import com.example.ca1.api.RetrofitInstance
@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CloudJobListPresenter(val view: CloudJobsListView) {
+class CloudJobListPresenter(val view: CloudJobListView) {
 
     var app: MainApp
     private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
@@ -44,7 +44,6 @@ class CloudJobListPresenter(val view: CloudJobsListView) {
     fun doDeleteCloudJob(job: CloudJobModel, pos: Int) {
         app.cloudJobs.delete(job)
         view.onDelete(pos)
-        refreshEmissions()
     }
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
