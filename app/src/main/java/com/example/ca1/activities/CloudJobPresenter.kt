@@ -19,10 +19,10 @@ class CloudJobPresenter(private val view: CloudJobView) {
     var edit = false
 
     init {
-        if (view.intent.hasExtra("cloudJob_edit")) {
+        if (view.intent.hasExtra("cloud_job_edit")) {
             edit = true
-            //cloudJob = view.intent.getParcelableExtra("cloudJob_edit",CloudJobModel::class.java)!!
-            cloudJob = view.intent.extras?.getParcelable("cloudJob_edit")!!
+            //cloudJob = view.intent.getParcelableExtra("cloud_job_edit",CloudJobModel::class.java)!!
+            cloudJob = view.intent.extras?.getParcelable("cloud_job_edit")!!
             view.showCloudJob(cloudJob)
         }
         registerImagePickerCallback()
