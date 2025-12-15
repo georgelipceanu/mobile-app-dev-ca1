@@ -13,11 +13,11 @@ import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
-class CloudJobsListView : AppCompatActivity(), CloudJobListener {
+class CloudJobListView : AppCompatActivity(), CloudJobListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityCloudJobsListBinding
-    lateinit var presenter: CloudJobsListPresenter
+    lateinit var presenter: CloudJobListPresenter
     private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class CloudJobsListView : AppCompatActivity(), CloudJobListener {
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
 
-        presenter = CloudJobsListPresenter(this)
+        presenter = CloudJobListPresenter(this)
         app = application as MainApp
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)

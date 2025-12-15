@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CloudJobsListPresenter(val view: CloudJobsListView) {
+class CloudJobListPresenter(val view: CloudJobsListView) {
 
     var app: MainApp
     private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>

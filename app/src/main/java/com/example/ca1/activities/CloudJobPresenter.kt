@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.DataCentreLocation
 import com.example.ca1.models.CloudJobModel
-import com.example.ca1.views.editlocation.EditLocationView
 import timber.log.Timber
 
 class CloudJobPresenter(private val view: CloudJobView) {
