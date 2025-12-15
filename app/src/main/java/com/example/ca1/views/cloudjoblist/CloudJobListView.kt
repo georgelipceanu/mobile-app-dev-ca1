@@ -18,7 +18,7 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityCloudJobsListBinding
     lateinit var presenter: CloudJobListPresenter
-    private var position: Int = 0
+    private lateinit var adapter: CloudJobAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -31,9 +31,21 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
 
         presenter = CloudJobListPresenter(this)
         app = application as MainApp
-
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        loadCloudJobs()
+        adapter = CloudJobAdapter(presenter.getCloudJobs(), this)
+        binding.recyclerView.adapter = adapter
+        onRefresh()
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                presenter.doSearch(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                presenter.doSearch(newText)
+                return true
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,32 +61,19 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun loadCloudJobs() {
-        binding.recyclerView.adapter =
-            CloudJobAdapter(presenter.getCloudJobs(), this)
-        onRefresh()
+    fun showJobs(list: List<CloudJobModel>) {
+        adapter.submitList(list)
     }
 
     fun onRefresh() {
-        binding.recyclerView.adapter =
-            CloudJobAdapter(presenter.getCloudJobs(), this)
-    }
-
-    fun onDelete(position: Int) {
-        binding.recyclerView.adapter?.notifyItemRemoved(position)
-    }
-
-    fun onItemChanged(position: Int) {
-        binding.recyclerView.adapter?.notifyItemChanged(position)
+        showJobs(presenter.getCloudJobs())
     }
 
     override fun onCloudJobClick(cloudjob: CloudJobModel) {
-        position = presenter.getCloudJobs().indexOf(cloudjob)
-        presenter.doEditCloudJob(cloudjob, position)
+        presenter.doEditCloudJob(cloudjob)
     }
 
     override fun onCloudJobDeleteIconClick(cloudjob: CloudJobModel) {
-        position = presenter.getCloudJobs().indexOf(cloudjob)
-        presenter.doDeleteCloudJob(cloudjob, position)
+        presenter.doDeleteCloudJob(cloudjob)
     }
 }

@@ -19,7 +19,6 @@ class CloudJobListPresenter(val view: CloudJobListView) {
     var app: MainApp
     private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-    private var position: Int = 0
     init {
         app = view.application as MainApp
         registerRefreshCallback()
@@ -31,28 +30,28 @@ class CloudJobListPresenter(val view: CloudJobListView) {
         val launcherIntent = Intent(view, CloudJobView::class.java)
         refreshIntentLauncher.launch(launcherIntent)
     }
-    fun doEditCloudJob(job: CloudJobModel, pos: Int) {
+    fun doEditCloudJob(job: CloudJobModel) {
         val launcherIntent = Intent(view, CloudJobView::class.java)
         launcherIntent.putExtra("cloud_job_edit", job)
-        position = pos
         refreshIntentLauncher.launch(launcherIntent)
     }
     fun doShowCloudJobsMap() {
         val launcherIntent = Intent(view, CloudJobMapsActivity::class.java)
         mapIntentLauncher.launch(launcherIntent)
     }
-    fun doDeleteCloudJob(job: CloudJobModel, pos: Int) {
+    fun doDeleteCloudJob(job: CloudJobModel) {
         app.cloudJobs.delete(job)
-        view.onDelete(pos)
+        view.onRefresh()
+        refreshEmissions()
     }
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
-            view.registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()
-            ) {
-                if (it.resultCode == android.app.Activity.RESULT_OK) {
-                    refreshEmissions()
-                    view.onRefresh()
+            view.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                when (it.resultCode) {
+                    android.app.Activity.RESULT_OK, 99 -> {
+                        refreshEmissions()
+                        view.onRefresh()
+                    }
                 }
             }
     }
@@ -64,7 +63,7 @@ class CloudJobListPresenter(val view: CloudJobListView) {
     }
     private fun refreshEmissions() {
         val jobs = app.cloudJobs.findAll()
-        for ((index, job) in jobs.withIndex()) {
+        for (job in jobs) {
             if (job.duration <= 0) continue
 
             calculateEmissions(
@@ -74,7 +73,7 @@ class CloudJobListPresenter(val view: CloudJobListView) {
                 onSuccess = { grams ->
                     job.emissions = grams
                     app.cloudJobs.update(job)
-                    view.onItemChanged(index)
+                    view.onRefresh()
                 },
                 onError = { }
             )
@@ -119,5 +118,11 @@ class CloudJobListPresenter(val view: CloudJobListView) {
                     onError(t)
                 }
             })
+    }
+
+    fun doSearch(query: String?) {
+        val list = if (query.isNullOrBlank()) app.cloudJobs.findAll()
+        else app.cloudJobs.findByTitle(query)
+        view.showJobs(list)
     }
 }

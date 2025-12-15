@@ -21,29 +21,7 @@ class CloudJobPresenter(private val view: CloudJobView) {
     private lateinit var imageIntentLauncher : ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var edit = false
-
-    init {
-        if (view.intent.hasExtra("cloud_job_edit")) {
-            edit = true
-            //cloudJob = view.intent.getParcelableExtra("cloud_job_edit",CloudJobModel::class.java)!!
-            cloudJob = view.intent.extras?.getParcelable("cloud_job_edit")!!
-            view.showCloudJob(cloudJob)
-        }
-        registerImagePickerCallback()
-        registerMapCallback()
-    }
-
-    fun doAddOrSave(title: String, description: String) {
-        cloudJob.title = title
-        cloudJob.description = description
-        if (edit) {
-            app.cloudJobs.update(cloudJob)
-        } else {
-            app.cloudJobs.create(cloudJob)
-        }
-        view.setResult(RESULT_OK)
-        view.finish()
-    }
+    private var durationFieldValue = 30
 
     fun doCancel() {
         view.finish()
@@ -119,8 +97,6 @@ class CloudJobPresenter(private val view: CloudJobView) {
             }
     }
 
-    private var durationFieldValue = 30
-
     init {
         if (view.intent.hasExtra("cloud_job_edit")) {
             edit = true
@@ -173,7 +149,7 @@ class CloudJobPresenter(private val view: CloudJobView) {
         DatePickerDialog(
             view,
             { _, year, month, dayOfMonth ->
-                val date = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                val date = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth) // format "yyyy-MM-dd", ref: https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.text/format.html
                 cloudJob.deadline = date
                 view.showDeadline(date)
             },
