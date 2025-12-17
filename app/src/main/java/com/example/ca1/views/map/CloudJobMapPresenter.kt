@@ -17,17 +17,17 @@ class CloudJobMapPresenter(val view: CloudJobMapView) {
     fun doPopulateMap(map: GoogleMap) {
         map.uiSettings.setZoomControlsEnabled(true)
         map.setOnMarkerClickListener(view)
-        app.cloudJobs.findAll().forEach {
-            val loc = LatLng(it.lat, it.lng)
-            val options = MarkerOptions().title(it.title).position(loc)
-            map.addMarker(options)?.tag = it.id
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
+        app.cloudJobs.findAllPairs().forEach { (id, job) ->
+            val loc = LatLng(job.lat, job.lng)
+            val options = MarkerOptions().title(job.title).position(loc)
+            map.addMarker(options)?.tag = id
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, job.zoom))
         }
     }
 
     fun doMarkerSelected(marker: Marker) {
-        val tag = marker.tag as Long
-        val cloudJob = app.cloudJobs.findById(tag)
-        if (cloudJob != null) view.showCloudJob(cloudJob)
+        val id = marker.tag as? String ?: return
+        val job = app.cloudJobs.findById(id)
+        if (job != null) view.showCloudJob(job)
     }
 }

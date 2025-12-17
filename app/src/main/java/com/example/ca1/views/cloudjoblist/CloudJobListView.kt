@@ -32,9 +32,8 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
         presenter = CloudJobListPresenter(this)
         app = application as MainApp
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = CloudJobAdapter(presenter.getCloudJobs(), this)
+        adapter = CloudJobAdapter(emptyList(), this) // starts with emptyList() before jobs are loaded from database
         binding.recyclerView.adapter = adapter
-        onRefresh()
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 presenter.doSearch(query)
@@ -61,19 +60,29 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
         return super.onOptionsItemSelected(item)
     }
 
-    fun showJobs(list: List<CloudJobModel>) {
+    fun showJobs(list: List<Pair<String, CloudJobModel>>) {
         adapter.submitList(list)
     }
 
-    fun onRefresh() {
-        showJobs(presenter.getCloudJobs())
+    fun showError(message: String) {
+        // TODO: add snackbar
     }
 
-    override fun onCloudJobClick(cloudjob: CloudJobModel) {
-        presenter.doEditCloudJob(cloudjob)
+    override fun onCloudJobClick(id: String, cloudjob: CloudJobModel) {
+        presenter.doEditCloudJob(id, cloudjob)
     }
 
-    override fun onCloudJobDeleteIconClick(cloudjob: CloudJobModel) {
-        presenter.doDeleteCloudJob(cloudjob)
+    override fun onCloudJobDeleteIconClick(id: String, cloudjob: CloudJobModel) {
+        presenter.doDeleteCloudJob(id)
+    }
+
+    override fun onStart() { // UI active, ref: https://developer.android.com/guide/components/activities/activity-lifecycle
+        super.onStart()
+        presenter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.stopListening()
     }
 }

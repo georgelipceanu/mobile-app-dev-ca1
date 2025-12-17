@@ -22,15 +22,32 @@ class CloudJobPresenter(private val view: CloudJobView) {
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var edit = false
     private var durationFieldValue = 30
+    private var id: String? = null
+
+    init {
+        if (view.intent.hasExtra("cloud_job_edit")) {
+            edit = true
+            cloudJob = view.intent.extras?.getParcelable("cloud_job_edit")!!
+            id = view.intent.getStringExtra("cloud_job_id")
+            view.showCloudJob(cloudJob)
+            durationFieldValue = if (cloudJob.duration > -1) cloudJob.duration else 30
+        }
+        registerImagePickerCallback()
+        registerMapCallback()
+    }
 
     fun doCancel() {
         view.finish()
     }
 
     fun doDelete() {
-        view.setResult(99)
-        app.cloudJobs.delete(cloudJob)
-        view.finish()
+        val id = id ?: return
+        app.cloudJobs.delete(id, onDone = {
+            view.setResult(99)
+            view.finish()
+        }, onError = {
+            // TODO: add snackbar
+        })
     }
 
     fun doSelectImage() {
@@ -97,17 +114,6 @@ class CloudJobPresenter(private val view: CloudJobView) {
             }
     }
 
-    init {
-        if (view.intent.hasExtra("cloud_job_edit")) {
-            edit = true
-            cloudJob = view.intent.extras?.getParcelable("cloud_job_edit")!!
-            view.showCloudJob(cloudJob)
-            durationFieldValue = if (cloudJob.duration > -1) cloudJob.duration else 30
-        }
-        registerImagePickerCallback()
-        registerMapCallback()
-    }
-
     fun initForm() {
         view.setReplicaPickerBounds(1, 20)
 
@@ -172,9 +178,32 @@ class CloudJobPresenter(private val view: CloudJobView) {
         cloudJob.replicas = replicas
         cloudJob.duration = if (isIndefinite) -1 else durationFieldValue
 
-        if (edit) app.cloudJobs.update(cloudJob) else app.cloudJobs.create(cloudJob)
-
-        view.setResult(RESULT_OK)
-        view.finish()
+        val onSuccess = {
+            view.setResult(RESULT_OK)
+            view.finish()
+        }
+        val onFailure: (Exception) -> Unit = { e ->
+            view.showError(e.message ?: "Save failed")
+        }
+        if (edit) {
+            val id = id ?: run { view.showError("Missing id"); return }
+            app.cloudJobs.update(
+                id = id,
+                job = cloudJob,
+                newImageUri = cloudJob.image,     // <- IMPORTANT
+                onDone = onSuccess,
+                onError = onFailure
+            )
+        } else {
+            app.cloudJobs.create(
+                job = cloudJob,
+                imageUri = cloudJob.image,        // <- IMPORTANT
+                onDone = { newId ->
+                    id = newId
+                    onSuccess()
+                },
+                onError = onFailure
+            )
+        }
     }
 }

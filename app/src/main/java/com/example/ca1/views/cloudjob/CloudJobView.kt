@@ -84,13 +84,21 @@ class CloudJobView : AppCompatActivity() {
         binding.cloudjobTitle.setText(cloudJob.title)
         binding.description.setText(cloudJob.description)
         binding.btnAdd.setText(R.string.save_cloud_job)
-        Picasso.get()
-            .load(cloudJob.image)
-            .into(binding.cloudjobImage)
-        if (cloudJob.image != Uri.EMPTY) {
-            binding.chooseImage.setText(R.string.change_cloudjob_image)
-        }
 
+        when {
+            cloudJob.image != Uri.EMPTY -> {
+                Picasso.get().load(cloudJob.image).into(binding.cloudjobImage)
+                binding.chooseImage.setText(R.string.change_cloudjob_image)
+            }
+            cloudJob.imageUrl.isNotBlank() -> {
+                Picasso.get().load(cloudJob.imageUrl).into(binding.cloudjobImage)
+                binding.chooseImage.setText(R.string.change_cloudjob_image)
+            }
+            else -> {
+                binding.cloudjobImage.setImageDrawable(null)
+                binding.chooseImage.setText(R.string.change_cloudjob_image)
+            }
+        }
     }
 
     fun updateImage(image: Uri){
@@ -116,5 +124,9 @@ class CloudJobView : AppCompatActivity() {
 
     fun showDeadline(value: String) {
         binding.deadlineField.setText(value)
+    }
+
+    fun showError(message: String) {
+        // TODO: add snackbar
     }
 }
