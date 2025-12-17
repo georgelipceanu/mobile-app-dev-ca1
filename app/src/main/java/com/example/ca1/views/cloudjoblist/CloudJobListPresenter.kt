@@ -5,12 +5,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.ca1.BuildConfig
 import com.example.ca1.views.cloudjob.CloudJobView
-import com.example.ca1.activities.CloudJobMapsActivity
 import com.example.ca1.api.CarbonIntensityResponse
 import com.example.ca1.api.RetrofitInstance
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import com.example.ca1.views.auth.AuthView
+import com.example.ca1.views.map.CloudJobMapView
 import com.google.firebase.firestore.ListenerRegistration
 import retrofit2.Call
 import retrofit2.Callback
@@ -60,7 +60,7 @@ class CloudJobListPresenter(val view: CloudJobListView) {
     }
 
     fun doShowCloudJobsMap() {
-        val launcherIntent = Intent(view, CloudJobMapsActivity::class.java)
+        val launcherIntent = Intent(view, CloudJobMapView::class.java)
         mapIntentLauncher.launch(launcherIntent)
     }
 
