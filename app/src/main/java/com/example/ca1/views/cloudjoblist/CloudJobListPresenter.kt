@@ -10,10 +10,12 @@ import com.example.ca1.api.CarbonIntensityResponse
 import com.example.ca1.api.RetrofitInstance
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
+import com.example.ca1.views.auth.AuthView
 import com.google.firebase.firestore.ListenerRegistration
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.google.firebase.auth.FirebaseAuth
 
 class CloudJobListPresenter(val view: CloudJobListView) {
 
@@ -60,6 +62,12 @@ class CloudJobListPresenter(val view: CloudJobListView) {
     fun doShowCloudJobsMap() {
         val launcherIntent = Intent(view, CloudJobMapsActivity::class.java)
         mapIntentLauncher.launch(launcherIntent)
+    }
+
+    fun doSignOut() {
+        FirebaseAuth.getInstance().signOut()
+        val launcherIntent = Intent(view, AuthView::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // flag for going back to boot up task, ref: https://www.geeksforgeeks.org/android/how-to-launch-an-application-automatically-on-system-boot-up-in-android/
+        view.startActivity(launcherIntent)
     }
 
     private fun registerRefreshCallback() {

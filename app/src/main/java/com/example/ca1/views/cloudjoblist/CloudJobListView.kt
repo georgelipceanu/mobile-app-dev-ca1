@@ -3,6 +3,7 @@ package com.example.ca1.views.cloudjoblist
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ca1.R
@@ -12,6 +13,7 @@ import com.example.ca1.databinding.ActivityCloudJobsListBinding
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.GravityCompat
 
 class CloudJobListView : AppCompatActivity(), CloudJobListener {
 
@@ -19,6 +21,8 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
     private lateinit var binding: ActivityCloudJobsListBinding
     lateinit var presenter: CloudJobListPresenter
     private lateinit var adapter: CloudJobAdapter
+    private lateinit var toggle: ActionBarDrawerToggle // ref: https://developer.android.com/reference/androidx/appcompat/app/ActionBarDrawerToggle, https://www.youtube.com/watch?v=xXfTxcqOUQA (useful video for concept)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -28,6 +32,32 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
+
+        toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.toolbar,
+            R.string.nav_open,
+            R.string.nav_close
+        )
+        binding.drawerLayout.addDrawerListener(toggle)         // ref: https://developer.android.com/reference/androidx/drawerlayout/widget/DrawerLayout#addDrawerListener(androidx.drawerlayout.widget.DrawerLayout.DrawerListener), https://developer.android.com/reference/androidx/drawerlayout/widget/DrawerLayout.DrawerListener
+        toggle.syncState()
+        binding.navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> { }
+                R.id.nav_maps -> {
+                    presenter.doShowCloudJobsMap()
+                }
+                R.id.nav_add -> {
+                    presenter.doAddCloudJob()
+                }
+                R.id.nav_signout -> {
+                    presenter.doSignOut()
+                }
+            }
+            binding.drawerLayout.closeDrawer(GravityCompat.START) // closes drawer back to start side (left), ref: https://developer.android.com/reference/androidx/core/view/GravityCompat
+            true // return true once a selection is made
+        }
 
         presenter = CloudJobListPresenter(this)
         app = application as MainApp

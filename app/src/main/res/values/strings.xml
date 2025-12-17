@@ -31,4 +31,6 @@
     <string name="previous">Previous</string>
     <string name="select_placemark_image">Select image</string>
     <string name="change_placemark_image">Change image</string>
+    <string name="nav_open">Open nav</string>
+    <string name="nav_close">Close nav</string>
 </resources>

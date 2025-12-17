@@ -190,14 +190,14 @@ class CloudJobPresenter(private val view: CloudJobView) {
             app.cloudJobs.update(
                 id = id,
                 job = cloudJob,
-                newImageUri = cloudJob.image,     // <- IMPORTANT
+                newImageUri = cloudJob.image,     // needed for image upload
                 onDone = onSuccess,
                 onError = onFailure
             )
         } else {
             app.cloudJobs.create(
                 job = cloudJob,
-                imageUri = cloudJob.image,        // <- IMPORTANT
+                imageUri = cloudJob.image,        // needed for image upload
                 onDone = { newId ->
                     id = newId
                     onSuccess()

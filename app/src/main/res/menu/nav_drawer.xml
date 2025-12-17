@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/nav_maps"
-        android:title="Maps view"
+        android:title="Data Centre Map view"
         android:icon="@android:drawable/ic_dialog_map" />
 
     <item
