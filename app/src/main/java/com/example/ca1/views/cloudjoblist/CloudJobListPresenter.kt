@@ -5,7 +5,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.ca1.BuildConfig
 import com.example.ca1.views.cloudjob.CloudJobView
-import com.example.ca1.activities.CloudJobMapsActivity
 import com.example.ca1.api.CarbonIntensityResponse
 import com.example.ca1.api.RetrofitInstance
 import com.example.ca1.main.MainApp
