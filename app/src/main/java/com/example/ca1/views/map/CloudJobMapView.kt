@@ -1,5 +1,6 @@
 package com.example.ca1.views.map
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.GoogleMap
@@ -36,9 +37,24 @@ class CloudJobMapView : AppCompatActivity() , GoogleMap.OnMarkerClickListener{
     fun showCloudJob(cloudJob: CloudJobModel) {
         contentBinding.currentTitle.text = cloudJob.title
         contentBinding.currentDescription.text = cloudJob.description
-        Picasso.get()
-            .load(cloudJob.image)
-            .into(contentBinding.imageView)
+        contentBinding.latitude.text = "Latitude: %.5f".format(cloudJob.lat)
+        contentBinding.longitude.text = "Longitude: %.5f".format(cloudJob.lng)
+
+        when {
+            cloudJob.imageUrl.isNotBlank() -> {
+                Picasso.get()
+                    .load(cloudJob.imageUrl)
+                    .into(contentBinding.imageView)
+            }
+            cloudJob.image != Uri.EMPTY -> {
+                Picasso.get()
+                    .load(cloudJob.image)
+                    .into(contentBinding.imageView)
+            }
+            else -> {
+                contentBinding.imageView.setImageDrawable(null)
+            }
+        }
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
