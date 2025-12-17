@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ca2">
         <activity
-            android:name=".activities.CloudJobMapsActivity"
+            android:name=".views.map.CloudJobMapView"
             android:exported="false"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.Ca2" />
