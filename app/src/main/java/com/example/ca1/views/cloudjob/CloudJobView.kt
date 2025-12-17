@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ca1.R
 import com.google.android.material.snackbar.Snackbar
@@ -71,7 +72,9 @@ class CloudJobView : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_delete -> {
-                presenter.doDelete()
+                confirmDelete {
+                    presenter.doDelete()
+                }
             }
             R.id.item_cancel -> {
                 presenter.doCancel()
@@ -128,5 +131,14 @@ class CloudJobView : AppCompatActivity() {
 
     fun showError(message: String) {
         // TODO: add snackbar
+    }
+
+    fun confirmDelete(
+        onConfirm: () -> Unit
+    ) {
+        AlertDialog.Builder(this).setTitle(R.string.delete_cloudJob).setMessage(R.string.delete_cloudjob_message) // ref: https://www.digitalocean.com/community/tutorials/android-alert-dialog-using-kotlin
+            .setPositiveButton(R.string.delete) { _, _ ->
+                onConfirm()
+            }.setNegativeButton(android.R.string.cancel, null).show()
     }
 }

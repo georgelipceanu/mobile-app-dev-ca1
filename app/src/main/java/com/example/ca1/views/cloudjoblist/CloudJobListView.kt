@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ca1.R
@@ -103,7 +104,9 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
     }
 
     override fun onCloudJobDeleteIconClick(id: String, cloudjob: CloudJobModel) {
-        presenter.doDeleteCloudJob(id)
+        confirmDelete {
+            presenter.doDeleteCloudJob(id)
+        }
     }
 
     override fun onStart() { // UI active, ref: https://developer.android.com/guide/components/activities/activity-lifecycle
@@ -114,5 +117,14 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
     override fun onStop() {
         super.onStop()
         presenter.stopListening()
+    }
+
+    fun confirmDelete(
+        onConfirm: () -> Unit
+    ) {
+        AlertDialog.Builder(this).setTitle(R.string.delete_cloudJob).setMessage(R.string.delete_cloudjob_message)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                onConfirm()
+            }.setNegativeButton(android.R.string.cancel, null).show()
     }
 }
