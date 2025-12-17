@@ -178,33 +178,32 @@ class CloudJobPresenter(private val view: CloudJobView) {
         cloudJob.replicas = replicas
         cloudJob.duration = if (isIndefinite) -1 else durationFieldValue
 
+        val onSuccess = {
+            view.setResult(RESULT_OK)
+            view.finish()
+        }
+        val onFailure: (Exception) -> Unit = { e ->
+            view.showError(e.message ?: "Save failed")
+        }
         if (edit) {
-            val jobId = id ?: return
+            val id = id ?: run { view.showError("Missing id"); return }
             app.cloudJobs.update(
-                jobId,
-                cloudJob,
-                onDone = {
-                    view.setResult(RESULT_OK)
-                    view.finish()
-                },
-                onError = {
-                    // TODO: add snackbar
-                }
+                id = id,
+                job = cloudJob,
+                newImageUri = cloudJob.image,     // <- IMPORTANT
+                onDone = onSuccess,
+                onError = onFailure
             )
         } else {
             app.cloudJobs.create(
-                cloudJob,
-                onDone = {
-                    view.setResult(RESULT_OK)
-                    view.finish()
+                job = cloudJob,
+                imageUri = cloudJob.image,        // <- IMPORTANT
+                onDone = { newId ->
+                    id = newId
+                    onSuccess()
                 },
-                onError = {
-                    // TODO: add snackbar
-                }
+                onError = onFailure
             )
         }
-
-        view.setResult(RESULT_OK)
-        view.finish()
     }
 }
