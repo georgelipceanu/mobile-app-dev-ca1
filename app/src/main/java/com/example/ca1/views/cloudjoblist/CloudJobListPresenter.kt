@@ -33,6 +33,7 @@ class CloudJobListPresenter(val view: CloudJobListView) {
         listener = app.cloudJobs.listenAll(
             onData = { pairs ->
                 view.showJobs(pairs)
+                refreshEmissions()
             },
             onError = {
                 view.showError(it.message ?: "Failed to load jobs")
@@ -45,8 +46,7 @@ class CloudJobListPresenter(val view: CloudJobListView) {
     }
 
     fun doDeleteCloudJob(id: String) {
-        app.cloudJobs.delete(id, onDone = {}, onError = { view.showError(it.message ?: "Delete failed") })
-        refreshEmissions()
+        app.cloudJobs.delete(id, onDone = {refreshEmissions()}, onError = { view.showError(it.message ?: "Delete failed") })
     }
 
     fun doAddCloudJob() {
@@ -80,8 +80,7 @@ class CloudJobListPresenter(val view: CloudJobListView) {
             ) { }
     }
     private fun refreshEmissions() {
-        val jobs = app.cloudJobs.findAll()
-        for (job in jobs) {
+        for ((id, job) in app.cloudJobs.findAllPairs()) {
             if (job.duration <= 0) continue
 
             calculateEmissions(
@@ -89,10 +88,12 @@ class CloudJobListPresenter(val view: CloudJobListView) {
                 durationMinutes = job.duration,
                 replicas = job.replicas,
                 onSuccess = { grams ->
-                    job.emissions = grams
-                    app.cloudJobs.update(job)
+                    val updated = job.copy(emissions = grams)
+                    app.cloudJobs.update(id, updated, null)
                 },
-                onError = { }
+                onError = { t ->
+                    view.showError("Emissions failed: ${t.message}")
+                }
             )
         }
     }

@@ -37,8 +37,8 @@ class CloudJobMapView : AppCompatActivity() , GoogleMap.OnMarkerClickListener{
     fun showCloudJob(cloudJob: CloudJobModel) {
         contentBinding.currentTitle.text = cloudJob.title
         contentBinding.currentDescription.text = cloudJob.description
-        contentBinding.latitude.text = "Latitude: %.5f".format(cloudJob.lat)
-        contentBinding.longitude.text = "Longitude: %.5f".format(cloudJob.lng)
+        contentBinding.latitude.text = "Lat: %.2f".format(cloudJob.lat)
+        contentBinding.longitude.text = "Long: %.2f".format(cloudJob.lng)
 
         when {
             cloudJob.imageUrl.isNotBlank() -> {

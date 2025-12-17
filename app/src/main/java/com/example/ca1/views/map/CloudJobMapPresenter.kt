@@ -30,7 +30,6 @@ class CloudJobMapPresenter(val view: CloudJobMapView) {
 
     fun doMarkerSelected(marker: Marker) {
         val id = marker.tag as? String ?: return
-        android.util.Log.d("MAP", "Clicked marker tag=$id")
         val job = app.cloudJobs.findById(id)
         if (job != null) view.showCloudJob(job)
     }
