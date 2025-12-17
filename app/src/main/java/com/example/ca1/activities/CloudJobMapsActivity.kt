@@ -78,10 +78,10 @@ class CloudJobMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
 
     override fun onMarkerClick(marker: Marker): Boolean {
         val tag = marker.tag as Long
-        val cloudjob = app.cloudJobs.findById(tag)
-        contentBinding.currentTitle.text = cloudjob!!.title
-        contentBinding.currentDescription.text = cloudjob.description
-        Picasso.get().load(cloudjob.image).into(contentBinding.imageView)
+        // val cloudjob = app.cloudJobs.findById(tag)
+//        contentBinding.currentTitle.text = cloudjob!!.title
+//        contentBinding.currentDescription.text = cloudjob.description
+//        Picasso.get().load(cloudjob.image).into(contentBinding.imageView)
         return false
     }
 }

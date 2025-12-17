@@ -9,11 +9,11 @@ import com.example.ca1.models.CloudJobModel
 import com.squareup.picasso.Picasso
 
 interface CloudJobListener {
-    fun onCloudJobClick(cloudjob: CloudJobModel)
-    fun onCloudJobDeleteIconClick(cloudjob: CloudJobModel)
+    fun onCloudJobClick(id: String, cloudjob: CloudJobModel)
+    fun onCloudJobDeleteIconClick(id: String, cloudjob: CloudJobModel)
 }
 
-class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
+class CloudJobAdapter (private var cloudJobs: List<Pair<String, CloudJobModel>>, // ref: https://www.baeldung.com/kotlin/pair-class
                        private val listener: CloudJobListener) :
     RecyclerView.Adapter<CloudJobAdapter.MainHolder>() {
     private val displayedJobs = cloudJobs.toMutableList() // ref: https://stackoverflow.com/questions/46846025/how-to-clone-or-copy-a-list-in-kotlin
@@ -26,13 +26,13 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val cloudJob = displayedJobs[holder.adapterPosition]
-        holder.bind(cloudJob, listener)
+        val (id, cloudJob) = displayedJobs[holder.adapterPosition]
+        holder.bind(id, cloudJob, listener)
     }
 
     override fun getItemCount(): Int = displayedJobs.size
 
-    fun submitList(newList: List<CloudJobModel>) {
+    fun submitList(newList: List<Pair<String, CloudJobModel>>) {
         displayedJobs.clear()
         displayedJobs.addAll(newList)
         notifyDataSetChanged()
@@ -41,7 +41,7 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
     class MainHolder(private val binding: CardCloudJobBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(cloudJob: CloudJobModel, listener: CloudJobListener) {
+        fun bind(id: String, cloudJob: CloudJobModel, listener: CloudJobListener) {
             binding.cloudjobTitle.text = cloudJob.title
             binding.description.text = cloudJob.description
             binding.deadline.text = if (!cloudJob.deadline.isNullOrBlank()) "Deadline: ${cloudJob.deadline}" else "No Deadline"
@@ -53,9 +53,13 @@ class CloudJobAdapter (private var cloudJobs: List<CloudJobModel>,
                 binding.duration.text = "${cloudJob.duration} mins"
             }
             binding.emissions.text = if (cloudJob.emissions != null) "Emissions: ${cloudJob.emissions} g CO₂" else "Emissions: Couldn't Calculate"
-            Picasso.get().load(cloudJob.image).resize(200,200).into(binding.imageIcon)
-            binding.root.setOnClickListener { listener.onCloudJobClick(cloudJob) }
-            binding.deleteButton.setOnClickListener { listener.onCloudJobDeleteIconClick(cloudJob) }
+            if (cloudJob.imageUrl.isNotBlank()) {
+                Picasso.get().load(cloudJob.imageUrl).resize(200, 200).into(binding.imageIcon)
+            } else {
+                binding.imageIcon.setImageDrawable(null)
+            }
+            binding.root.setOnClickListener { listener.onCloudJobClick(id, cloudJob) }
+            binding.deleteButton.setOnClickListener { listener.onCloudJobDeleteIconClick(id, cloudJob) }
         }
     }
 }

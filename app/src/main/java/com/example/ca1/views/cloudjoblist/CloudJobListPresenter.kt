@@ -10,6 +10,7 @@ import com.example.ca1.api.CarbonIntensityResponse
 import com.example.ca1.api.RetrofitInstance
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
+import com.google.firebase.firestore.ListenerRegistration
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,41 +20,50 @@ class CloudJobListPresenter(val view: CloudJobListView) {
     var app: MainApp
     private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
+    private var listener: ListenerRegistration? = null
     init {
         app = view.application as MainApp
         registerRefreshCallback()
         registerMapCallback()
     }
 
-    fun getCloudJobs() = app.cloudJobs.findAll()
+    fun startListening() {
+        listener = app.cloudJobs.listenAll(
+            onData = { pairs ->
+                view.showJobs(pairs)
+            },
+            onError = {
+                view.showError(it.message ?: "Failed to load jobs")
+            }
+        )
+    }
+
+    fun stopListening() {
+        listener?.remove() // ref: https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/ListenerRegistration
+    }
+
+    fun doDeleteCloudJob(id: String) {
+        app.cloudJobs.delete(id, onDone = {}, onError = { view.showError(it.message ?: "Delete failed") })
+        refreshEmissions()
+    }
+
     fun doAddCloudJob() {
         val launcherIntent = Intent(view, CloudJobView::class.java)
         refreshIntentLauncher.launch(launcherIntent)
     }
-    fun doEditCloudJob(job: CloudJobModel) {
-        val launcherIntent = Intent(view, CloudJobView::class.java)
-        launcherIntent.putExtra("cloud_job_edit", job)
-        refreshIntentLauncher.launch(launcherIntent)
+    fun doEditCloudJob(id: String, cloudjob: CloudJobModel) {
+        refreshIntentLauncher.launch(
+            Intent(view, CloudJobView::class.java).putExtra("cloud_job_id", id).putExtra("cloud_job_edit", cloudjob)
+        )
     }
+
     fun doShowCloudJobsMap() {
         val launcherIntent = Intent(view, CloudJobMapsActivity::class.java)
         mapIntentLauncher.launch(launcherIntent)
     }
-    fun doDeleteCloudJob(job: CloudJobModel) {
-        app.cloudJobs.delete(job)
-        view.onRefresh()
-        refreshEmissions()
-    }
+
     private fun registerRefreshCallback() {
-        refreshIntentLauncher =
-            view.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                when (it.resultCode) {
-                    android.app.Activity.RESULT_OK, 99 -> {
-                        refreshEmissions()
-                        view.onRefresh()
-                    }
-                }
-            }
+        refreshIntentLauncher = view.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
     }
     private fun registerMapCallback() {
         mapIntentLauncher =
@@ -73,7 +83,6 @@ class CloudJobListPresenter(val view: CloudJobListView) {
                 onSuccess = { grams ->
                     job.emissions = grams
                     app.cloudJobs.update(job)
-                    view.onRefresh()
                 },
                 onError = { }
             )
@@ -121,8 +130,8 @@ class CloudJobListPresenter(val view: CloudJobListView) {
     }
 
     fun doSearch(query: String?) {
-        val list = if (query.isNullOrBlank()) app.cloudJobs.findAll()
-        else app.cloudJobs.findByTitle(query)
-        view.showJobs(list)
+        val pairs = if (query.isNullOrBlank()) app.cloudJobs.findAllPairs()
+        else app.cloudJobs.findByTitlePairs(query)
+        view.showJobs(pairs)
     }
 }
