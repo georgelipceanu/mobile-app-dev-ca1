@@ -45,8 +45,8 @@ class CloudJobPresenter(private val view: CloudJobView) {
         app.cloudJobs.delete(id, onDone = {
             view.setResult(99)
             view.finish()
-        }, onError = {
-            // TODO: add snackbar
+        }, onError = { error ->
+            view.showError(error.message ?: "Failed to delete cloud job")
         })
     }
 

@@ -48,8 +48,7 @@ class CloudJobView : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener {
             if (binding.cloudjobTitle.text.toString().isEmpty()) {
-                Snackbar.make(binding.root, R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG)
-                    .show()
+                Snackbar.make(binding.root, R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG).show()
             } else {
                 presenter.doAddOrSave(
                     title = binding.cloudjobTitle.text.toString(),
@@ -129,8 +128,8 @@ class CloudJobView : AppCompatActivity() {
         binding.deadlineField.setText(value)
     }
 
-    fun showError(message: String) {
-        // TODO: add snackbar
+    fun showError(message: String) { // ref for chatgpt chat: https://chatgpt.com/c/6942e05e-bd04-8329-ab70-22b9efc587d8
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).setAction("Dismiss", null).show()
     }
 
     fun confirmDelete(

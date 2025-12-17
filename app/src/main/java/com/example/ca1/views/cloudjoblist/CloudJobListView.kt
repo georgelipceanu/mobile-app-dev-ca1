@@ -15,6 +15,7 @@ import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
+import com.google.android.material.snackbar.Snackbar
 
 class CloudJobListView : AppCompatActivity(), CloudJobListener {
 
@@ -95,8 +96,8 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
         adapter.submitList(list)
     }
 
-    fun showError(message: String) {
-        // TODO: add snackbar
+    fun showError(message: String) { // ref for chatgpt chat: https://chatgpt.com/c/6942e05e-bd04-8329-ab70-22b9efc587d8
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).setAction("Dismiss", null).show()
     }
 
     override fun onCloudJobClick(id: String, cloudjob: CloudJobModel) {
