@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ca1.R
 import com.google.android.material.snackbar.Snackbar
@@ -47,8 +48,7 @@ class CloudJobView : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener {
             if (binding.cloudjobTitle.text.toString().isEmpty()) {
-                Snackbar.make(binding.root, R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG)
-                    .show()
+                Snackbar.make(binding.root, R.string.enter_cloud_job_title, Snackbar.LENGTH_LONG).show()
             } else {
                 presenter.doAddOrSave(
                     title = binding.cloudjobTitle.text.toString(),
@@ -71,7 +71,9 @@ class CloudJobView : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_delete -> {
-                presenter.doDelete()
+                confirmDelete {
+                    presenter.doDelete()
+                }
             }
             R.id.item_cancel -> {
                 presenter.doCancel()
@@ -126,7 +128,16 @@ class CloudJobView : AppCompatActivity() {
         binding.deadlineField.setText(value)
     }
 
-    fun showError(message: String) {
-        // TODO: add snackbar
+    fun showError(message: String) { // ref for chatgpt chat: https://chatgpt.com/c/6942e05e-bd04-8329-ab70-22b9efc587d8
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).setAction("Dismiss", null).show()
+    }
+
+    fun confirmDelete(
+        onConfirm: () -> Unit
+    ) {
+        AlertDialog.Builder(this).setTitle(R.string.delete_cloudJob).setMessage(R.string.delete_cloudjob_message) // ref: https://www.digitalocean.com/community/tutorials/android-alert-dialog-using-kotlin
+            .setPositiveButton(R.string.delete) { _, _ ->
+                onConfirm()
+            }.setNegativeButton(android.R.string.cancel, null).show()
     }
 }

@@ -3,6 +3,8 @@ package com.example.ca1.views.cloudjoblist
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ca1.R
@@ -12,6 +14,8 @@ import com.example.ca1.databinding.ActivityCloudJobsListBinding
 import com.example.ca1.main.MainApp
 import com.example.ca1.models.CloudJobModel
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.GravityCompat
+import com.google.android.material.snackbar.Snackbar
 
 class CloudJobListView : AppCompatActivity(), CloudJobListener {
 
@@ -19,6 +23,8 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
     private lateinit var binding: ActivityCloudJobsListBinding
     lateinit var presenter: CloudJobListPresenter
     private lateinit var adapter: CloudJobAdapter
+    private lateinit var toggle: ActionBarDrawerToggle // ref: https://developer.android.com/reference/androidx/appcompat/app/ActionBarDrawerToggle, https://www.youtube.com/watch?v=xXfTxcqOUQA (useful video for concept)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -28,6 +34,32 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
+
+        toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.toolbar,
+            R.string.nav_open,
+            R.string.nav_close
+        )
+        binding.drawerLayout.addDrawerListener(toggle)         // ref: https://developer.android.com/reference/androidx/drawerlayout/widget/DrawerLayout#addDrawerListener(androidx.drawerlayout.widget.DrawerLayout.DrawerListener), https://developer.android.com/reference/androidx/drawerlayout/widget/DrawerLayout.DrawerListener
+        toggle.syncState()
+        binding.navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> { }
+                R.id.nav_maps -> {
+                    presenter.doShowCloudJobsMap()
+                }
+                R.id.nav_add -> {
+                    presenter.doAddCloudJob()
+                }
+                R.id.nav_signout -> {
+                    presenter.doSignOut()
+                }
+            }
+            binding.drawerLayout.closeDrawer(GravityCompat.START) // closes drawer back to start side (left), ref: https://developer.android.com/reference/androidx/core/view/GravityCompat
+            true // return true once a selection is made
+        }
 
         presenter = CloudJobListPresenter(this)
         app = application as MainApp
@@ -64,8 +96,8 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
         adapter.submitList(list)
     }
 
-    fun showError(message: String) {
-        // TODO: add snackbar
+    fun showError(message: String) { // ref for chatgpt chat: https://chatgpt.com/c/6942e05e-bd04-8329-ab70-22b9efc587d8
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).setAction("Dismiss", null).show()
     }
 
     override fun onCloudJobClick(id: String, cloudjob: CloudJobModel) {
@@ -73,7 +105,9 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
     }
 
     override fun onCloudJobDeleteIconClick(id: String, cloudjob: CloudJobModel) {
-        presenter.doDeleteCloudJob(id)
+        confirmDelete {
+            presenter.doDeleteCloudJob(id)
+        }
     }
 
     override fun onStart() { // UI active, ref: https://developer.android.com/guide/components/activities/activity-lifecycle
@@ -84,5 +118,14 @@ class CloudJobListView : AppCompatActivity(), CloudJobListener {
     override fun onStop() {
         super.onStop()
         presenter.stopListening()
+    }
+
+    fun confirmDelete(
+        onConfirm: () -> Unit
+    ) {
+        AlertDialog.Builder(this).setTitle(R.string.delete_cloudJob).setMessage(R.string.delete_cloudjob_message)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                onConfirm()
+            }.setNegativeButton(android.R.string.cancel, null).show()
     }
 }

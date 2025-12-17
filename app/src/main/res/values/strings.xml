@@ -31,4 +31,10 @@
     <string name="previous">Previous</string>
     <string name="select_placemark_image">Select image</string>
     <string name="change_placemark_image">Change image</string>
+    <string name="nav_open">Open nav</string>
+    <string name="nav_close">Close nav</string>
+    <string name="delete_cloudjob_message">
+        Are you sure you want to delete this cloud job? This action cannot be undone.
+    </string>
+    <string name="delete">Delete</string>
 </resources>
